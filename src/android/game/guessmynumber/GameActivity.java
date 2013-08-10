@@ -1,41 +1,33 @@
 package android.game.guessmynumber;
-
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.view.GestureDetectorCompat;
-import android.util.Log;
-import android.view.GestureDetector;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.view.MotionEvent;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.Toast;
 
-public class GameActivity extends Activity {
+
+public class GameActivity extends FragmentActivity {
 	
-	private GestureDetectorCompat mDetector; 
-	GridView gridView;
-	
-	static final String[] numbers = new String[] { 
-		"A", "B", "C", "D", "E",
-		"F", "G", "H", "I", "J",
-		"K", "L", "M", "N", "O",
-		"P", "Q", "R", "S", "T",
-		"U", "V", "W", "X", "Y", "Z"};
+	private static final int NUM_PAGES = 5;
+	private ViewPager mPager;
+	private PagerAdapter mPagerAdapter;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game);
+		setContentView(R.layout.activity_game_viewpager);
 		
-		mDetector = new GestureDetectorCompat(this, new MyGestureListener());
-		
-		gridView = (GridView) findViewById(R.id.gridViewNumbers);
-		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, numbers);
-		
-		gridView.setAdapter(adapter);
+		mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                invalidateOptionsMenu();
+            }
+        });
 	}
 
 	@Override
@@ -45,37 +37,26 @@ public class GameActivity extends Activity {
 		return true;
 	}
 	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		this.mDetector.onTouchEvent(event);
-		return super.onTouchEvent(event);
-	}
-	
-	class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-		private static final String DEBUG_TAG = "Gestures"; 
-		
+	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
+
+		public ScreenSlidePagerAdapter(android.support.v4.app.FragmentManager fragmentManager) {
+			super(fragmentManager);
+			// TODO Auto-generated constructor stub
+		}
+
+
 		@Override
-		public boolean onDown(MotionEvent e) {
+		public android.support.v4.app.Fragment getItem(int position) {
 			// TODO Auto-generated method stub
-            Log.d(DEBUG_TAG,"onDown: " + e.toString()); 
-			return true;
+			 return GameActivityPageFragment.create(position);
+			//return null;
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return NUM_PAGES;
 		}
 		
-		@Override
-		public boolean onFling(MotionEvent start, MotionEvent end, float velocityX,
-				float velocityY) {
-			// TODO Auto-generated method stub
-			Log.d(DEBUG_TAG, "onFling: " + start.toString() + end.toString());
-			if(start.getX() > end.getX()){
-				Toast.makeText(GameActivity.this, "Left Swipe", Toast.LENGTH_SHORT).show();
-				
-			}
-			else{
-				Toast.makeText(GameActivity.this, "Right Swipe", Toast.LENGTH_SHORT).show();
-			}
-            return true;
-		}
-	}
-	
+	} 
 }
