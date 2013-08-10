@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RadioGroupCardMode"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewNumberRangeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number Range"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <SeekBar
+        android:id="@+id/seekBarNumberRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="30" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textViewNumberRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewCardModeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Card Mode"
+        android:layout_marginTop="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <View 
+        android:background="#2F4F4F" 
+        android:layout_width = "fill_parent" 
+        android:layout_height="1dip" 
+        android:layout_centerVertical ="true" 
+        android:layout_marginTop="5dp"
+        android:layout_above="@id/textViewCardModeLabel"/>
+    <RadioGroup
+        android:id="@+id/radioGroupAppGuess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    <RadioButton
+        android:id="@+id/radioAppGuess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App Guess" />
+
+    <RadioButton
+        android:id="@+id/radioUserGuess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Guess" />
+
+    <RadioButton
+        android:id="@+id/radiofreePlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Free Play" />
+    </RadioGroup>
+   
+    
+    <TextView
+        android:id="@+id/textViewGameModeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Mode"
+        android:layout_marginTop="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+   <View 
+        android:background="#2F4F4F" 
+        android:layout_width = "fill_parent" 
+        android:layout_height="1dip" 
+        android:layout_centerVertical ="true" 
+        android:layout_marginTop="5dp"
+        android:layout_above="@id/textViewGameModeLabel"/>
+    <RadioGroup
+        android:id="@+id/radioGroupGameMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    <RadioButton
+        android:id="@+id/radioFibonacci"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fibonacci" />
+
+    <RadioButton
+        android:id="@+id/radioBinary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Binary" />
+
+    <RadioButton
+        android:id="@+id/radioPrime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prime" />
+</RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+           
+    <Button
+        android:id="@+id/OK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onOkClick"
+        android:text="Okay" />
+    </LinearLayout>
+</LinearLayout>

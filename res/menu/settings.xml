@@ -5,4 +5,11 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:icon="@android:drawable/ic_menu_preferences"/>
+     
+     <item
+        android:id="@+id/menu_help"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_help"/>
+    
 </menu>
