@@ -1,4 +1,5 @@
 package android.game.guessmynumber;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -6,9 +7,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 
-public class GameActivity extends FragmentActivity {
+public class GameActivity extends FragmentActivity
+							implements QuitGameDialogFragment.QuitDialogListener{
 	
 	private static final int NUM_PAGES = 5; //Numbe of pages we have
 	private ViewPager mPager;
@@ -30,14 +33,26 @@ public class GameActivity extends FragmentActivity {
             }
         });
 	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		switch(item.getItemId()){
+		case R.id.menu_quit:
+			DialogFragment quitDialog = new QuitGameDialogFragment();
+			quitDialog.show(getFragmentManager() , "quitDialog");
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.settings, menu);
+		getMenuInflater().inflate(R.menu.inside_game_menu, menu);
 		return true;
 	}
-	
 	/**adapter**/
 	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
 
@@ -65,6 +80,24 @@ public class GameActivity extends FragmentActivity {
 			//Log.d("getCount", Integer.toString(NUM_PAGES));
 			return NUM_PAGES;
 		}
+		
+	}
+
+	/**On quit game dialog click**/
+	@Override
+	public void onDialogPositiveClick(DialogFragment quitDialog) {
+		// TODO Auto-generated method stub
+		//If yes start new activity
+		//Intent intent = new Intent(this , MainActivity.class);
+		//startActivity(intent);
+		finish();
+		Log.d("ok clicked" , "on ok click");
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment quitDialog) {
+		// TODO Auto-generated method stub
+		Log.d(" no clicked" , "on no click");
 		
 	} 
 }

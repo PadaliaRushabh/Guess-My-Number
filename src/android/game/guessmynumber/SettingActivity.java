@@ -4,7 +4,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ActionMode;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +21,16 @@ public class SettingActivity extends Activity{
 	
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		
+		switch(item.getItemId()){
+		case android.R.id.home:
+			//Intent upIntent = new Intent(this, MainActivity.class);
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
 		return super.onMenuItemSelected(featureId, item);
 	}
+	
 	
 	@Override
 	/**Diaplay back button only**/
