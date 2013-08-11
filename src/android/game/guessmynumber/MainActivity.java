@@ -56,8 +56,28 @@ public class MainActivity extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		//bab.release();
-		//finish();
+		MusicHelper.manipulateVisible(0);
+		MusicHelper.manipulatePause(1);
+		boolean isvisible = MusicHelper.isVisible();
+		
+		if(!isvisible){
+			stopService(new Intent(this, MyMusic.class));
+		}
+	}
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		MusicHelper.manipulateVisible(1);
+		MusicHelper.manipulatePause(0);
+	}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		MusicHelper.manipulateVisible(1);
+		MusicHelper.manipulatePause(0);
+		
 	}
 
 }
