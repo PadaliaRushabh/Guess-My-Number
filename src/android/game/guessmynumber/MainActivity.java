@@ -1,29 +1,21 @@
 package android.game.guessmynumber;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-//TODO: Stop and Destroy Music
+//TODO: Only pause music if all activities invisible
 public class MainActivity extends Activity {
 	
-	//MediaPlayer bab;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		//bab = MediaPlayer.create(MainActivity.this , R.raw.music);
-		//bab.setLooping(true);
-		//bab.start();
 		startService(new Intent(this, MyMusic.class));
 		Toast.makeText(this, "oncreate", Toast.LENGTH_SHORT).show();
 	}

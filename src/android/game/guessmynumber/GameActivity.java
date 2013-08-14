@@ -66,19 +66,16 @@ public class GameActivity extends FragmentActivity
 		@Override
 		public android.support.v4.app.Fragment getItem(int position) {
 			// TODO Auto-generated method stub
-			 //Log.d("getItem", Integer.toString(position));
 			 /*calls the create method from GameActivityPageFragement class
 			  and gets the newly created fragment back which was created from the create
 			  method*/
 			 return GameActivityPageFragment.create(position);
-			//return null;
 		}
 
 		@Override
 		//gets called multiple times and returns total pages
 		public int getCount() {
 			// TODO Auto-generated method stub
-			//Log.d("getCount", Integer.toString(NUM_PAGES));
 			return NUM_PAGES;
 		}
 		
@@ -89,19 +86,16 @@ public class GameActivity extends FragmentActivity
 	public void onDialogPositiveClick(DialogFragment quitDialog) {
 		// TODO Auto-generated method stub
 		//If yes start new activity
-		//Intent intent = new Intent(this , MainActivity.class);
-		//startActivity(intent);
 		finish();
-		//Log.d("ok clicked" , "on ok click");
 	}
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment quitDialog) {
 		// TODO Auto-generated method stub
-		Log.d(" no clicked" , "on no click");
 		
 	} 
 	
+	//Onpause pause the music
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
@@ -110,6 +104,7 @@ public class GameActivity extends FragmentActivity
 		MM.pauseSong();
 		
 	}
+	//onResume start the music
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub

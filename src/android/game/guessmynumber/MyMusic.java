@@ -1,11 +1,9 @@
 package android.game.guessmynumber;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
-import android.widget.Toast;
 
 public class MyMusic extends Service {
 	
@@ -16,30 +14,29 @@ public class MyMusic extends Service {
 		return null;
 	}
 	
+	//On create get the music and set it to continues loop
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
 		mp = MediaPlayer.create(MyMusic.this, R.raw.music);
 		mp.setLooping(true);
 		
 	}
 	
+	//on startService(intent), start the music
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
 		mp.start();
-		Toast.makeText(this, "Service onstart", Toast.LENGTH_SHORT).show();
 		return 1;
-		//return START_STICKY;
 	}
 	
+	//onDestroy Stop/Destroy the music
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		//super.onDestroy();
-		Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
+		super.onDestroy();
 		mp.stop();
 		mp.release();
 	}
@@ -50,6 +47,7 @@ public class MyMusic extends Service {
 		mp.pause();
 	}
 	
+	//Pause the music
 	public void pauseSong(){
 		mp.pause();
 	}
