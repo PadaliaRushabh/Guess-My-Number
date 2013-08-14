@@ -44,6 +44,15 @@ public class MyMusic extends Service {
 		mp.release();
 	}
 	
+
+	public void onPause(){
+
+		mp.pause();
+	}
 	
+	public void pauseSong(){
+		mp.pause();
+	}
+		
 
 }

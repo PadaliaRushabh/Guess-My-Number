@@ -66,7 +66,7 @@ public class GameActivity extends FragmentActivity
 		@Override
 		public android.support.v4.app.Fragment getItem(int position) {
 			// TODO Auto-generated method stub
-			 Log.d("getItem", Integer.toString(position));
+			 //Log.d("getItem", Integer.toString(position));
 			 /*calls the create method from GameActivityPageFragement class
 			  and gets the newly created fragment back which was created from the create
 			  method*/
@@ -92,7 +92,7 @@ public class GameActivity extends FragmentActivity
 		//Intent intent = new Intent(this , MainActivity.class);
 		//startActivity(intent);
 		finish();
-		Log.d("ok clicked" , "on ok click");
+		//Log.d("ok clicked" , "on ok click");
 	}
 
 	@Override
@@ -106,27 +106,14 @@ public class GameActivity extends FragmentActivity
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		MusicHelper.manipulateVisible(0);
-		MusicHelper.manipulatePause(1);
-		boolean isvisible = MusicHelper.isVisible();
+		MyMusic MM = new MyMusic();
+		MM.pauseSong();
 		
-		if(!isvisible){
-			stopService(new Intent(this, MyMusic.class));
-		}
-	}
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		MusicHelper.manipulateVisible(1);
-		MusicHelper.manipulatePause(0);
 	}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		MusicHelper.manipulateVisible(1);
-		MusicHelper.manipulatePause(0);
-		
+		startService(new Intent(this, MyMusic.class));
 	}
 }

@@ -55,27 +55,15 @@ public class SettingActivity extends Activity{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		MusicHelper.manipulateVisible(0);
-		MusicHelper.manipulatePause(1);
-		boolean isvisible = MusicHelper.isVisible();
+		MyMusic MM = new MyMusic();
+		MM.pauseSong();
 		
-		if(!isvisible){
-			stopService(new Intent(this, MyMusic.class));
-		}
-	}
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		MusicHelper.manipulateVisible(1);
-		MusicHelper.manipulatePause(0);
 	}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		MusicHelper.manipulateVisible(1);
-		MusicHelper.manipulatePause(0);
-		
+		startService(new Intent(this, MyMusic.class));
 	}
+	
 }

@@ -3,11 +3,18 @@ package android.game.guessmynumber;
 public class MusicHelper {
 	
 	private static final int MAX_ACTIVITY = 4;
-	private static int visible = 0;
-	private static int paused = 0;
-	private static int destroyed = 0;
+	private static boolean continuePlaying = true; 
 	
-	public static void manipulateDestroyed(int operation){
+	
+	
+	public static boolean musicManagerLogic(){
+		
+		if(!continuePlaying)
+			return false;
+
+		return true;
+	}
+	/*public static void manipulateDestroyed(int operation){
 		switch(operation){
 		case 0:
 			destroyed = destroyed - 1;
@@ -63,6 +70,6 @@ public class MusicHelper {
 			return false;
 		}
 			return true;
-	}
+	}*/
 	
 }
