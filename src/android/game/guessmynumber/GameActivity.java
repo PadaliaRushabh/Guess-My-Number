@@ -17,6 +17,7 @@ public class GameActivity extends FragmentActivity
 	private static final int NUM_PAGES = 5; //Numbe of pages we have
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
+	Settings setting = new Settings(GameActivity.this);
 
 	/**get the pager from activity_game_developer and set it with adapter**/
 	@Override
@@ -101,7 +102,8 @@ public class GameActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		super.onPause();
 		MyMusic MM = new MyMusic();
-		MM.pauseSong();
+		if(setting.getMusic() == true)
+			MM.pauseSong();
 		
 	}
 	//onResume start the music
@@ -109,6 +111,7 @@ public class GameActivity extends FragmentActivity
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		startService(new Intent(this, MyMusic.class));
+		if(setting.getMusic())
+			startService(new Intent(this, MyMusic.class));
 	}
 }

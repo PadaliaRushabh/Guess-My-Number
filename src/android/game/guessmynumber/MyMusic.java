@@ -28,9 +28,11 @@ public class MyMusic extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-		mp.start();
+		if(mp.isPlaying() == false)
+			mp.start();
 		return 1;
 	}
+	
 	
 	//onDestroy Stop/Destroy the music
 	@Override
@@ -43,14 +45,18 @@ public class MyMusic extends Service {
 	
 
 	public void onPause(){
-
-		mp.pause();
+		if(mp.isPlaying())
+			mp.pause();
 	}
 	
 	//Pause the music
 	public void pauseSong(){
-		mp.pause();
+		if(mp.isPlaying())
+			mp.pause();
 	}
-		
-
+	
+	
+	public static boolean isplaying(){
+		return mp.isPlaying();
+	}
 }

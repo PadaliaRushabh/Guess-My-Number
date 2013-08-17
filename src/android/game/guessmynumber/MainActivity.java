@@ -6,18 +6,19 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
 
 //TODO: Only pause music if all activities invisible
 public class MainActivity extends Activity {
-	
+	Settings setting = new Settings(MainActivity.this);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		startService(new Intent(this, MyMusic.class));
-		Toast.makeText(this, "oncreate", Toast.LENGTH_SHORT).show();
+		//Settings setting = new Settings(MainActivity.this);
+		if(setting.getMusic())
+			startService(new Intent(this, MyMusic.class));
 	}
 
 	/**On setting clicked open settingActivity**/
@@ -52,14 +53,16 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		MyMusic MM = new MyMusic();
-		MM.pauseSong();
+		if(setting.getMusic() == true)
+			MM.pauseSong();
 		
 	}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		startService(new Intent(this, MyMusic.class));
+		if(setting.getMusic())
+			startService(new Intent(this, MyMusic.class));
 	}
 	
 	@Override
