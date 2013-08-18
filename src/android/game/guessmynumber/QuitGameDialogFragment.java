@@ -74,6 +74,6 @@ public class QuitGameDialogFragment extends DialogFragment {
 		
 		return builder.create();
 
-	}
+	}	
 
 }

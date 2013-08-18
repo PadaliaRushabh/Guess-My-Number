@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		MyMusic MM = new MyMusic();
+		// check if music is playing
 		if(setting.getMusic() == true)
 			MM.pauseSong();
 		

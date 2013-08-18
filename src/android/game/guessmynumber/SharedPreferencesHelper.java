@@ -41,6 +41,8 @@ public class SharedPreferencesHelper {
         editor = pref.edit();
     }
     
+    //set preferences when the add opens for the first time
+    //or id the shared preferences dosen't exists
     public void initPreferences(){
     	
     	if(!pref.contains(KEY_MUSIC)){
@@ -57,6 +59,7 @@ public class SharedPreferencesHelper {
     	
     }
     
+    //save preferences to shared preferences
     public void setPreferences(int range , int card_mode , int game_mode , boolean music){
     	//add values
 		editor.putBoolean(KEY_MUSIC, music);
@@ -67,7 +70,7 @@ public class SharedPreferencesHelper {
 		//save changes
 		editor.commit();
     }
-    
+    //get all preferences
     public HashMap<String, String> getAllPreferences(){
     	
     	HashMap<String, String> Hash_pref = new HashMap<String, String>();
@@ -82,8 +85,8 @@ public class SharedPreferencesHelper {
     	
     	return Hash_pref;
     }
-
-   public void clear(){
+    //clear all preferences
+    public void clear(){
     	editor.clear();
     }
 

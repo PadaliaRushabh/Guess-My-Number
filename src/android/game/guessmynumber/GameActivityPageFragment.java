@@ -1,12 +1,13 @@
 package android.game.guessmynumber;
+
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
 
 
 public class GameActivityPageFragment extends Fragment{
@@ -32,7 +33,6 @@ public class GameActivityPageFragment extends Fragment{
 	        Bundle args = new Bundle();
 	        args.putInt(ARG_PAGE, pageNumber);
 	        fragment.setArguments(args);
-	        Log.d("create", fragment.toString());
 	        //return fragment to GameActivity
 	        return fragment;
 	    }
@@ -47,7 +47,6 @@ public class GameActivityPageFragment extends Fragment{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mPageNumber = getArguments().getInt(ARG_PAGE); // [optional]Get page number
-		Log.d("onCreate", "onCreate");
 		
 	 }
 	 /**Called after onCreate
@@ -58,15 +57,23 @@ public class GameActivityPageFragment extends Fragment{
 		// TODO Auto-generated method stub
 		 ViewGroup rootView = (ViewGroup) inflater
 	                .inflate(R.layout.activity_game, container, false);
-		 GridView grid=(GridView)rootView.findViewById(R.id.gridViewNumbers);
+		 if(mPageNumber + 1 <= 5){
+			 GridView grid=(GridView)rootView.findViewById(R.id.gridViewNumbers);
 		 
-		 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+		 	ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 					android.R.layout.simple_list_item_1, numbers);
-		 
-		 grid.setAdapter(adapter);
-		 Log.d("oncreateView", "onCreateView");
+		 	grid.setAdapter(adapter);
+		 	// Set the title view to show the page number.
+	     	((TextView) rootView.findViewById(R.id.pageNumber))
+	     							.setText("Card " 
+	     									+ Integer.toString(mPageNumber + 1)  
+	     									+ " of "
+	     									+ "5");
+		 }
+		 else{
+			 ((TextView) rootView.findViewById(R.id.pageNumber))
+				.setText("Enter the Number");
+		 }
 		 return rootView;
 	}
-
-
 }

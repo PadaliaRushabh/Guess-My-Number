@@ -1,5 +1,8 @@
 package android.game.guessmynumber;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -7,16 +10,19 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class GameActivity extends FragmentActivity
 							implements QuitGameDialogFragment.QuitDialogListener{
 	
-	private static final int NUM_PAGES = 5; //Numbe of pages we have
+	private static final int NUM_PAGES = 6; //Number of pages we have
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
+	final Context context = this;
 	Settings setting = new Settings(GameActivity.this);
 
 	/**get the pager from activity_game_developer and set it with adapter**/
@@ -31,9 +37,46 @@ public class GameActivity extends FragmentActivity
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+            	
+            	if(position + 1 == 6){
+            		// get prompts.xml view
+    				LayoutInflater li = LayoutInflater.from(context);
+    				View promptsView = li.inflate(R.layout.dialog_enter_number, null);
+     
+    				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+    						context);
+     
+    				// set prompts.xml to alertdialog builder
+    				alertDialogBuilder.setView(promptsView);
+    				
+    				// set dialog message
+    				alertDialogBuilder
+    					.setCancelable(false)
+    					.setPositiveButton("OK",
+    					  new DialogInterface.OnClickListener() {
+    					    public void onClick(DialogInterface dialog,int id) {
+    						// get user input and set it to result
+    						// edit text
+    					    	finish();
+    					    }
+    					  })
+    					.setNegativeButton("I don't Know",
+    					  new DialogInterface.OnClickListener() {
+    					    public void onClick(DialogInterface dialog,int id) {
+    							finish();
+    					    }
+    					  });
+    				
+    				// create alert dialog
+    				AlertDialog alertDialog = alertDialogBuilder.create();
+     
+    				// show it
+    				alertDialog.show();
+            	}
                 invalidateOptionsMenu();
             }
         });
+      
 	}
 	
 	@Override
@@ -70,7 +113,9 @@ public class GameActivity extends FragmentActivity
 			 /*calls the create method from GameActivityPageFragement class
 			  and gets the newly created fragment back which was created from the create
 			  method*/
-			 return GameActivityPageFragment.create(position);
+			//Log.d("Page No" , Integer.toString(mPager.getCurrentItem()));
+			
+			return GameActivityPageFragment.create(position);
 		}
 
 		@Override

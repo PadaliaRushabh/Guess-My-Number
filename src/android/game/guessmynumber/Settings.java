@@ -17,7 +17,9 @@ public class Settings {
 	SharedPreferencesHelper PrefObj;
 	static  HashMap<String, String> Hash_pref = new HashMap<String, String>();
 	
-	public Settings(Context _Context ,int range , int card_mode , int game_mode , boolean music_isPlaying){
+	//constructor to be used when to set or update settings
+	public Settings(Context _Context ,int range , int card_mode , int game_mode 
+																	, boolean music_isPlaying){
 		
 		PrefObj = new SharedPreferencesHelper(_Context);
 		PrefObj.setPreferences(range ,card_mode, game_mode,music_isPlaying);
@@ -28,13 +30,14 @@ public class Settings {
 		this._Context = _Context;
 	}
 	
+	//get setting
 	public HashMap<String, String> getSettings(){
 		
 		getUpdate();
 		return Settings.Hash_pref;
 		
 	}
-	
+	//get latest settings
 	public void getUpdate(){
 		
 		PrefObj = new SharedPreferencesHelper(_Context);
@@ -49,7 +52,7 @@ public class Settings {
 		 }*/
 	}
 	
-    
+   //get music from shared preferences 
    public boolean getMusic(){
 	   
 	   getUpdate();
