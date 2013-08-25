@@ -1,6 +1,8 @@
 package android.game.guessmynumber;
+
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,7 +33,10 @@ public class GameActivity extends FragmentActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_viewpager);
 		
+		NumberGenerator.PrimeGenerator();
+		
 		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager.setOffscreenPageLimit(0);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -91,6 +96,10 @@ public class GameActivity extends FragmentActivity
 		return super.onMenuItemSelected(featureId, item);
 	}
 	
+	public void getPosition(){
+		Log.d("Page No" , Integer.toString(mPager.getCurrentItem()));
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,8 +123,16 @@ public class GameActivity extends FragmentActivity
 			  and gets the newly created fragment back which was created from the create
 			  method*/
 			//Log.d("Page No" , Integer.toString(mPager.getCurrentItem()));
-			
+			//Fragment fragment = GameActivityPageFragment.ne 
+			GameActivityPageFragment fragment = GameActivityPageFragment.create(position);
+        	Log.d("Page No" , Integer.toString(fragment.getPageNumber()));
 			return GameActivityPageFragment.create(position);
+		}
+		
+		@Override
+		public int getItemPosition(Object object) {
+			// TODO Auto-generated method stub
+			return super.getItemPosition(object);
 		}
 
 		@Override
