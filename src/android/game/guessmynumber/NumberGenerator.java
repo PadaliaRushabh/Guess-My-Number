@@ -18,7 +18,7 @@ public class NumberGenerator {
 	static String[] binaryValuesReversed = new String[MAX_RANGE];
 		
 	// Prime values (Horizontal Row)
-	static ArrayList<Integer> primeValues = new ArrayList<Integer>();
+	static ArrayList<Integer> values = new ArrayList<Integer>();
 		
 	// Card values
 	static ArrayList<String> cardValues = new ArrayList<String>();
@@ -26,9 +26,9 @@ public class NumberGenerator {
 	//Final String
 	static String[] cardArray = new String[SELECTED_RANGE];
 	
-	public static void PrimeGenerator() {
-		if(primeValues.size() > 1){
-			primeValues.clear();
+	public static void clear(){
+		if(values.size() > 1){
+			values.clear();
 			cardValues.clear();
 			binaryValues = null;
 			binaryValues = new String[MAX_RANGE];
@@ -36,17 +36,42 @@ public class NumberGenerator {
 			binaryValuesReversed = new String[MAX_RANGE];
 			
 		}
-		primeValues.add(1);
+	}
+	public static void PrimeGenerator() {
+		clear();
+		values.add(1);
 	
 		for(int i = 2, primesFound = 1; i < Integer.MAX_VALUE; i++) {
 			if(isPrime(i)) {
 				primesFound++;
-				primeValues.add(i);
+				values.add(i);
 			}
 			if(primesFound == SELECTED_RANGE)
 				break;
 		}
-		//PrintPrimeList(primeValues);
+		//PrintPrimeList(values);
+		FillBinaryList();
+	}
+	
+	
+	// Generate SELECTED_RANGE number of Fibonacci numbers (Horizontal row) 
+	public static void FibGenerator() {
+		clear();
+		values.add(1);
+		values.add(2);
+			
+		for(int i = 0, j = 1; i < SELECTED_RANGE - 2; i++, j++) {
+			values.add(values.get(i) + values.get(j));
+		}
+		FillBinaryList();	
+	}
+		
+		// Generate SELECTED_RANGE number of Binary numbers (Horizontal row) 
+	public static void BinGenerator() {
+		clear();	
+		for(int i = 1; i <= SELECTED_RANGE; i++) {
+				values.add((int)(Math.pow(2, i)));
+		}
 		FillBinaryList();
 	}
 	// Helper function for PrimeGenerator()

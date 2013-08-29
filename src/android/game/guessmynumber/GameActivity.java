@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class GameActivity extends FragmentActivity
@@ -33,10 +34,11 @@ public class GameActivity extends FragmentActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_viewpager);
 		
+	
+		//time.setText(timerText);
 		NumberGenerator.PrimeGenerator();
 		
 		mPager = (ViewPager) findViewById(R.id.pager);
-		mPager.setOffscreenPageLimit(0);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -115,7 +117,7 @@ public class GameActivity extends FragmentActivity
 			// TODO Auto-generated constructor stub
 		}
 
-		//Called when ever user swipes and goes to new fragment
+		//Called when ever user "Time"swipes and goes to new fragment
 		@Override
 		public android.support.v4.app.Fragment getItem(int position) {
 			// TODO Auto-generated method stub
