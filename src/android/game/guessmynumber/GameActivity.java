@@ -1,12 +1,21 @@
 package android.game.guessmynumber;
 
+import java.text.SimpleDateFormat;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.game.guessmynumber.TimerService.MyTimerTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -23,19 +32,28 @@ public class GameActivity extends FragmentActivity
 							implements QuitGameDialogFragment.QuitDialogListener{
 	
 	private static final int NUM_PAGES = 6; //Number of pages we have
-	private ViewPager mPager;
+	private ViewPager mPager;	
 	private PagerAdapter mPagerAdapter;
 	final Context context = this;
 	Settings setting = new Settings(GameActivity.this);
+	Timer timer = new Timer();
+	TextView timerView;
+	static int timeit = 0 ;
+	 
+	 /*MyResultReceiver resultReceiver;
+	 Intent intent;
+	 TextView txtview;*/
 
 	/**get the pager from activity_game_developer and set it with adapter**/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_viewpager);
-		
+		//startService(new Intent(GameActivity.this, TimerService.class));
 	
-		//time.setText(timerText);
+		//timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+		timerView = (TextView) findViewById(R.id.Timer);
+		
 		NumberGenerator.PrimeGenerator();
 		
 		mPager = (ViewPager) findViewById(R.id.pager);
@@ -82,8 +100,13 @@ public class GameActivity extends FragmentActivity
             	}
                 invalidateOptionsMenu();
             }
-        });
-      
+        });   
+        
+        /*resultReceiver = new MyResultReceiver(null);
+        intent = new Intent(this, TimerService.class);
+		intent.putExtra("receiver", resultReceiver);
+		startService(intent);*/
+        timeIt();
 	}
 	
 	@Override
@@ -177,5 +200,21 @@ public class GameActivity extends FragmentActivity
 		super.onResume();
 		if(setting.getMusic())
 			startService(new Intent(this, MyMusic.class));
+	}
+	
+	protected void timeIt(){
+		timer.schedule(new TimerTask() {
+			public void run() {
+			    timeit++;
+			    Log.d("timer", "timer");
+			    runOnUiThread(new Runnable() {
+
+			    @Override
+			    public void run() {
+			    	timerView.setText("Timer:" + timeit);
+			            }
+			    });
+			        }
+		}, 10, 1000);
 	}
 }

@@ -4,11 +4,15 @@ package android.game.guessmynumber;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.support.v4.app.Fragment;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +27,10 @@ public class GameActivityPageFragment extends Fragment{
 	 GridView gridView;
 	 private static int mPageNumber;
 	 public static final String ARG_PAGE = "page";
-	 private static Timer t = new Timer();
-	 private static TimerTask mTimerTask;
-	 private static Handler timerHandler ;
 	 private ViewGroup rootView;
-	 private static int timeint = 0;
-	 private static boolean timeFlag = true;
+
 	 
-	
+	 
 	 /**Gets call from GameActivity class to create a new fragment as the
 	  user swips**/
 	 public static GameActivityPageFragment create(int pageNumber) {
@@ -48,19 +48,19 @@ public class GameActivityPageFragment extends Fragment{
 	 public GameActivityPageFragment(){
 		 
 	 }
-	 
-	
-	 
+	  
 	 /**Called when new object is made by the create method from above**/
 	 @Override
 	 public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mPageNumber = getArguments().getInt(ARG_PAGE); // [optional]Get page number
-			//System.out.print("page" + mPageNumber + ": ");
-		
-		//timerHandler  = new Handler(); 
 		Log.d("create" , "OnCreate");
+		
+		/*if(receiver!=null){
+			IntentFilter intentFilter = new IntentFilter(CUSTOM_INTENT);
+			registerReceiver(receiver, intentFilter);
+		}*/
 	 }
 	 /**Called after onCreate
 	  	return GrideView with our ABCD**/
@@ -68,11 +68,6 @@ public class GameActivityPageFragment extends Fragment{
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		 Log.d("createView" , "OnCreateView");
-		 if(this.timeFlag){
-			 this.timeFlag = false;
-			 onTimerTick();
-		 	t.schedule(mTimerTask, 10, 1000); 
-		 }
 		 List<String> numbers2 ; 
 		// TODO Auto-generated method stub		
 		 rootView = (ViewGroup) inflater
@@ -106,46 +101,17 @@ public class GameActivityPageFragment extends Fragment{
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		Log.d("destory" , "DestroyView");
-		t.cancel();
 		
 	}
 	 @Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		timerHandler  = new Handler(); 
-		//onTimerTick();
-		//t.schedule(mTimerTask, 3000, 1000);
 		Log.d("attach" , "AttachView");
 		 
 	}
 	public int getPageNumber() {
 	        return mPageNumber;
-	}
-	public void onTimerTick(){
-		//if (timeFlag) return;
-		mTimerTask = new TimerTask() {
-
-			@Override
-			public void run() {
-				//if (timeFlag) return;
-				//timeFlag = true;
-				// TODO Auto-generated method stub
-				timerHandler.post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						((TextView) rootView.findViewById(R.id.timer))
-						.setText("TIME: " + timeint);
-						//Log.d("TIME:" , Integer.toString(timeint));
-						timeint+= 1; 
-						//Log.d("print" , " From time");
-					}
-				});
-			}
-			
-		};
 	}
 
 }
