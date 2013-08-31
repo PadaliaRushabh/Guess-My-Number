@@ -1,21 +1,13 @@
 package android.game.guessmynumber;
 
-import java.text.SimpleDateFormat;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.game.guessmynumber.TimerService.MyTimerTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
