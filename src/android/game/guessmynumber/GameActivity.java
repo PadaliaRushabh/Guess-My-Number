@@ -38,7 +38,7 @@ public class GameActivity extends FragmentActivity
 	Settings setting = new Settings(GameActivity.this);
 	Timer timer = new Timer();
 	TextView timerView;
-	static int timeit = 0 ;
+	int timeit = 0 ;
 	 
 	 /*MyResultReceiver resultReceiver;
 	 Intent intent;
