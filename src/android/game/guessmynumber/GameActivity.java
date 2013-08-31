@@ -23,7 +23,7 @@ import android.widget.TextView;
 public class GameActivity extends FragmentActivity
 							implements QuitGameDialogFragment.QuitDialogListener{
 	
-	private static final int NUM_PAGES = 6; //Number of pages we have
+	private static int NUM_PAGES = 0; //Number of pages we have
 	private ViewPager mPager;	
 	private PagerAdapter mPagerAdapter;
 	final Context context = this;
@@ -47,7 +47,7 @@ public class GameActivity extends FragmentActivity
 		timerView = (TextView) findViewById(R.id.Timer);
 		
 		NumberGenerator.PrimeGenerator();
-		
+		NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
 		mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -55,7 +55,7 @@ public class GameActivity extends FragmentActivity
             @Override
             public void onPageSelected(int position) {
             	
-            	if(position + 1 == 6){
+            	if(position == NUM_PAGES - 1){
             		// get prompts.xml view
     				LayoutInflater li = LayoutInflater.from(context);
     				View promptsView = li.inflate(R.layout.dialog_enter_number, null);
@@ -198,7 +198,6 @@ public class GameActivity extends FragmentActivity
 		timer.schedule(new TimerTask() {
 			public void run() {
 			    timeit++;
-			    Log.d("timer", "timer");
 			    runOnUiThread(new Runnable() {
 
 			    @Override

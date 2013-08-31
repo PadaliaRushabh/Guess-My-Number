@@ -5,28 +5,39 @@ import java.util.List;
 
 public class NumberGenerator {
 
-	// Number of cards
-	public static int SELECTED_RANGE = 5;
+	// Game Mode
+	public static int SELECTED_MODE = 3; 	// 1 = Prime, 2 = Fibonacci, 3 = Binary
 		
-	public static int MIN_RANGE = 3;
-	public static int PERFORMANCE_MAX = 12;
-	public static int MAX_RANGE = (int) Math.pow(2, SELECTED_RANGE) ;
+	// Range of Binary values (Vertical Row)
+	public static int SELECTED_RANGE = 30;
+		
+	// Number of Cards
+	public static int NUM_OF_CARDS = 0;
+		
+	// Max and Minimum SELECTED_RANGE
+	public static int MIN_RANGE = 1;
+	public static int MAX_RANGE = 50;
 
-	static int previous = 0 , next = 0;
 	// Binary values (Vertical Row)
-	static String[] binaryValues = new String[MAX_RANGE];
-	static String[] binaryValuesReversed = new String[MAX_RANGE];
+	static ArrayList<String> binaryValues = new ArrayList<String>();
+	static ArrayList<String> binaryValuesReversed = new ArrayList<String>();
 		
-	// Prime values (Horizontal Row)
-	static ArrayList<Integer> values = new ArrayList<Integer>();
+	// Prime/Fib/Binary values (Horizontal Row)
+	static ArrayList<Integer> mainValues = new ArrayList<Integer>();
 		
 	// Card values
 	static ArrayList<String> cardValues = new ArrayList<String>();
+		
+	// To calculate number of values on each card
+	static ArrayList<Integer> cardSplitting = new ArrayList<Integer>();
+		
+	// Empty String
+	static String S = "";
 	
-	//Final String
-	static String[] cardArray = new String[SELECTED_RANGE];
+	static int previous = 0 , next = 0;
 	
-	public static void clear(){
+	
+	/*public static void clear(){
 		if(values.size() > 1){
 			values.clear();
 			cardValues.clear();
@@ -36,89 +47,149 @@ public class NumberGenerator {
 			binaryValuesReversed = new String[MAX_RANGE];
 			
 		}
-	}
+	}*/
+	// Generate SELECTED_RANGE number of prime numbers (Horizontal row) 
 	public static void PrimeGenerator() {
-		clear();
-		values.add(1);
-	
-		for(int i = 2, primesFound = 1; i < Integer.MAX_VALUE; i++) {
-			if(isPrime(i)) {
-				primesFound++;
-				values.add(i);
-			}
-			if(primesFound == SELECTED_RANGE)
-				break;
-		}
-		//PrintPrimeList(values);
-		FillBinaryList();
-	}
-	
-	
-	// Generate SELECTED_RANGE number of Fibonacci numbers (Horizontal row) 
-	public static void FibGenerator() {
-		clear();
-		values.add(1);
-		values.add(2);
-			
-		for(int i = 0, j = 1; i < SELECTED_RANGE - 2; i++, j++) {
-			values.add(values.get(i) + values.get(j));
-		}
-		FillBinaryList();	
-	}
+		mainValues.add(1);
 		
-		// Generate SELECTED_RANGE number of Binary numbers (Horizontal row) 
-	public static void BinGenerator() {
-		clear();	
-		for(int i = 1; i <= SELECTED_RANGE; i++) {
-				values.add((int)(Math.pow(2, i)));
+		for(int i = 2, counter = 1; i < Integer.MAX_VALUE; i++) {
+			if(isPrime(i)) {
+				counter += i;
+				mainValues.add(i);
+			}
+			if(counter >= SELECTED_RANGE) {
+				NUM_OF_CARDS = mainValues.size();
+				break;
+			}
 		}
-		FillBinaryList();
+		GenerateBinaryList();
+		
 	}
+	
 	// Helper function for PrimeGenerator()
 	public static boolean isPrime(int x) {
 		for(int i = 2; i < x; i++) {
 			if(x % i == 0)
 				return false;
 		}
-			return true;
+		return true;
+	}
+	
+	
+	// Generate SELECTED_RANGE number of Fibonacci numbers (Horizontal row) 
+	public static void FibGenerator() {
+		System.out.println("FIBONACCI MODE");
+		System.out.println("Selected Range: " + SELECTED_RANGE);
+		mainValues.add(1);
+		mainValues.add(2);
+		
+		for(int i = 0, j = 1, counter = 1; i < SELECTED_RANGE; i++, j++) {
+			counter += mainValues.get(j);
+			if(counter >= SELECTED_RANGE) {
+				NUM_OF_CARDS = mainValues.size();
+				break;
+			}
+			mainValues.add(mainValues.get(i) + mainValues.get(j));
+		}
+		GenerateBinaryList();
+	}
+	
+	// Generate SELECTED_RANGE number of Binary numbers (Horizontal row) 
+	public static void BinGenerator() {
+		System.out.println("BINARY MODE");
+		System.out.println("Selected Range: " + SELECTED_RANGE);
+		
+		for(int i = 0, j = 0, counter = 0; i <= SELECTED_RANGE; i++) {
+			j = (int)(Math.pow(2, i));
+			mainValues.add(j);
+			counter += j;
+			if(counter >= SELECTED_RANGE) {
+				NUM_OF_CARDS = mainValues.size();
+				break;
+			}
+		}
+		GenerateBinaryList();
 	}
 	
 	// Fill up binaryValues
-	public static void FillBinaryList() {	
-		for(int i = 0; i < MAX_RANGE; i++) {
-			binaryValues[i] = Integer.toBinaryString(0x1000 | (i + 1)).substring(1);
-			binaryValuesReversed[i] = Integer.toBinaryString(0x1000 | (i + 1)).substring(1);
-		}
-			
-		for(int i = 0; i < MAX_RANGE; i++) 
-			binaryValuesReversed[i] = new StringBuffer(binaryValues[i]).reverse().toString();
-		FillCardValues();
-	}
-	// Fill card values and print
-	public static void FillCardValues() {
-		//System.out.print("Card Values: ");
-		
-		for(int i = 0; i < SELECTED_RANGE; i++) {
-			for(int j = 0; j < MAX_RANGE; j++) {
-				if(binaryValuesReversed[j].charAt(i) == (char) 49)
-					cardValues.add(Integer.toString(Integer.parseInt(binaryValues[j], 2)));
+	public static void GenerateBinaryList() {	
+		for(int i = 1; i < SELECTED_RANGE + 1; i++) {
+			S = "";
+			int whichNumber = i;
+			for(int j = (mainValues.size() - 1); j > -1; j--) {
+				
+				// Exact
+				if((whichNumber - mainValues.get(j)) == 0) {
+					S += "1";
+					// Fill up with 0s
+					while(mainValues.size() > S.length())
+						S += "0";
+					break;
+				}
+				
+				// Positive
+				else if((whichNumber - mainValues.get(j)) >= 0) {
+					S += "1";
+					whichNumber -= mainValues.get(j);
+				}
+					
+				// Negative
+				else if((whichNumber - mainValues.get(j)) < 0)
+					S += "0";
 			}
+			binaryValues.add(S);
 		}
-		//SplitCardValues();
-			
-		//System.out.println(cardValues);	
+		
+		for(int i = 0; i < binaryValues.size(); i++)
+			binaryValuesReversed.add(new StringBuffer(binaryValues.get(i)).reverse().toString());
+		
+		GenerateCardValues();
 	}
-	public static List<String> SplitCardValues(int page_no) {
-		if(page_no == 0){
-			previous = 0;
-			next = cardValues.size()/SELECTED_RANGE;
-		}else{
-			previous = (cardValues.size()/SELECTED_RANGE) * (page_no );
-			next = (cardValues.size()/SELECTED_RANGE) * (page_no+1);
-		}
-		System.out.println("sd:" + cardValues.subList(previous, next));
-		return cardValues.subList(previous, next);
 	
+	// Fill card values and print
+	public static void GenerateCardValues() {		
+		for(int i = 0, k = 0; i < NUM_OF_CARDS; i++) {
+			k = 0; // For splitting
+			for(int j = 0; j < SELECTED_RANGE; j++) {
+
+				if(binaryValuesReversed.get(j).charAt(i) == (char) 49) {
+					
+					k++;
+					cardValues.add(Integer.toString(j + 1));
+				}
+			}
+			cardSplitting.add(k);
+		}
+		SplitCardValues();
+	}
+	// Split card values and print
+	public static void SplitCardValues() {
+		for(int i = 0, j = 0; i < NUM_OF_CARDS; i++) {
+			System.out.print("Card " + (i + 1) + " : ");
+			System.out.println(cardValues.subList(j, j = j + cardSplitting.get(i)));
+		}
+	}	
+
+	public static List<String> SplitCardValues(int page_no) {
+		int j = 0, i = 0;
+		if(page_no == 0){
+			System.out.println("zero");
+			return cardValues.subList(j, j = j + cardSplitting.get(i));
+		}
+		else{
+			for(; i <= page_no - 1; i++) {
+				j = j + cardSplitting.get(i);
+				//System.out.println("i:" + i);
+				//System.out.println("j:" + j);
+				//System.out.println(cardSplitting.get(i));
+				
+			}
+			//System.out.println(cardValues.subList(j, j = j + cardSplitting.get(i)));
+			//return cardValues.subList(0, 5);
+			return cardValues.subList(j, j = j + cardSplitting.get(i));
+		}
+		
+		//return cardValues.subList(previous, next);
 	}
 
 }

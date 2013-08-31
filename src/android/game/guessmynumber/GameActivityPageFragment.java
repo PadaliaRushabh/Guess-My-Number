@@ -72,8 +72,12 @@ public class GameActivityPageFragment extends Fragment{
 		// TODO Auto-generated method stub		
 		 rootView = (ViewGroup) inflater
 	                .inflate(R.layout.activity_game, container, false);
-		 if(mPageNumber + 1 <= 5){
-			
+		 if(mPageNumber == NumberGenerator.NUM_OF_CARDS){
+			 ((TextView) rootView.findViewById(R.id.pageNumber))
+				.setText("Enter the Number");
+			 
+		 }
+		 else{	
 			numbers2 = NumberGenerator.SplitCardValues(mPageNumber);
 			
 			String[] stockArr = new String[numbers2.size()];
@@ -84,15 +88,12 @@ public class GameActivityPageFragment extends Fragment{
 					android.R.layout.simple_list_item_1, stockArr);
 		 	grid.setAdapter(adapter);
 		 	// Set the title view to show the page number.
+		 	int total_cards = NumberGenerator.NUM_OF_CARDS + 1;
 	     	((TextView) rootView.findViewById(R.id.pageNumber))
 	     							.setText("Card " 
 	     									+ Integer.toString(mPageNumber + 1)  
 	     									+ " of "
-	     									+ "5");
-		 }
-		 else{
-			 ((TextView) rootView.findViewById(R.id.pageNumber))
-				.setText("Enter the Number");
+	     									+ total_cards);
 		 }
 		 return rootView;
 	}
