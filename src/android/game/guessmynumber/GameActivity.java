@@ -1,5 +1,6 @@
 package android.game.guessmynumber;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,7 +36,7 @@ public class GameActivity extends FragmentActivity
 	TextView timerView;	
 	EditText secretNumber;
 	int timeit = 0 ;
-	NumberGenerator generator = new NumberGenerator(3 , 30);
+	NumberGenerator generator;
 	String item;
 	String []result = new String[4];
 	 
@@ -52,8 +53,11 @@ public class GameActivity extends FragmentActivity
 	
 		//timer.scheduleAtFixedRate(timerTask, 1000, 1000);
 		timerView = (TextView) findViewById(R.id.Timer);
-		
-		generator.PrimeGenerator();
+		System.out.println("ss" + setting.getCardMode());
+		System.out.println("ss" + setting.getRange());
+		//generator.PrimeGenerator();
+		generator = new NumberGenerator(setting.getGameMode() 
+						,(Integer.parseInt(setting.getRange()) + 10));
 		item = generator.selectNumber();		
 		Log.d("item" , item);
 		SecretNumber number = new SecretNumber(item);
@@ -125,7 +129,7 @@ public class GameActivity extends FragmentActivity
 	}
 	
 	public void prepareAndStartResultActivity(int status){
-		Time now = new Time();
+		Date now = new Date();
 		switch(status){
 		case 0:
 			result[0] = item;

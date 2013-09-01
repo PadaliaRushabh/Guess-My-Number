@@ -23,7 +23,6 @@ public class ResultActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 	    if (extras != null) {
 	    	result = extras.getStringArray("result");
-	    	Log.d("result", result[1].toString());
 	    }
 	    mode = (TextView)findViewById(R.id.TextViewMode);
 	    userinput = (TextView)findViewById(R.id.TextViewScore);
@@ -33,17 +32,25 @@ public class ResultActivity extends Activity {
 	    highscoredate = (TextView)findViewById(R.id.TextViewHighScoreDate);
 	    
 	    mode.setText("User Guess");
-	    userinput.setText("You Entered " + result[1].toString() + " in " 
-	    					+ result[2].toString() + " Sec");
+	   
 	    userinputdate.setText(result[3].toString());
-	    if(result[1].toString().equals(result[0].toString())){
-	    	msg = "You input " + result[1].toString() + " and secret number is " 
-	    				+ result[0].toString()+"\nYou Win";
-	    	
+	    if(result[1] == null){
+	    	msg = "The secret number is " + result[0].toString();
+	    	 userinput.setText("You didnot enter any answer but took " 
+ 					+ result[2].toString() + " Sec");
 	    }
 	    else{
-	    	msg = "You input " + result[1].toString() + " and secret number is " 
+	    	 userinput.setText("You Entered " + result[1].toString() + " in " 
+ 					+ result[2].toString() + " Sec");
+	    	if(result[1].toString().equals(result[0].toString())){
+	    		msg = "You input " + result[1].toString() + " and secret number is " 
+	    				+ result[0].toString()+"\nYou Win";
+	    	
+	    	}
+	    	else{
+	    		msg = "You input " + result[1].toString() + " and secret number is " 
 	    			+ result[0].toString()+"\nBetter luck next time";
+	    	}
 	    }
 	    message.setText(msg);
 	    highscore.setText("HighScore: 23 Sec");

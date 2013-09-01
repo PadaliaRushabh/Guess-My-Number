@@ -9,7 +9,7 @@ import android.content.ClipData.Item;
 public class NumberGenerator {
 
 	// Game Mode
-	public static int SELECTED_MODE = 3; 	// 1 = Prime, 2 = Fibonacci, 3 = Binary
+	//public static int SELECTED_MODE = 3; 	// 1 = Prime, 2 = Fibonacci, 3 = Binary
 		
 	// Range of Binary values (Vertical Row)
 	public static int SELECTED_RANGE = 30;
@@ -39,9 +39,23 @@ public class NumberGenerator {
 	
 	private Random randomGenerator = new Random();
 	
-	public NumberGenerator(int mode , int range){
-		NumberGenerator.SELECTED_MODE = mode;
+	public NumberGenerator(String mode , int range){
+		
 		NumberGenerator.SELECTED_RANGE = range;
+		switch(Integer.parseInt(mode)) {
+		case 0:
+			FibGenerator();
+			break;
+		case 1:
+			BinGenerator();
+			break;
+		case 2:
+			PrimeGenerator();
+			break;
+		default:
+			PrimeGenerator();
+		}
+		System.out.println("mode=" + mode);
 	}
 	public static void clear(){
 		if(cardValues.size() > 1){
