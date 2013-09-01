@@ -31,6 +31,7 @@ public class GameActivity extends FragmentActivity
 	Timer timer = new Timer();
 	TextView timerView;
 	int timeit = 0 ;
+	NumberGenerator generator = new NumberGenerator(3 , 30);
 	 
 	 /*MyResultReceiver resultReceiver;
 	 Intent intent;
@@ -46,7 +47,7 @@ public class GameActivity extends FragmentActivity
 		//timer.scheduleAtFixedRate(timerTask, 1000, 1000);
 		timerView = (TextView) findViewById(R.id.Timer);
 		
-		NumberGenerator.PrimeGenerator();
+		generator.PrimeGenerator();
 		NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
 		mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());

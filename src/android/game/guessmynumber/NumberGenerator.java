@@ -15,15 +15,15 @@ public class NumberGenerator {
 	public static int NUM_OF_CARDS = 0;
 		
 	// Max and Minimum SELECTED_RANGE
-	public static int MIN_RANGE = 1;
-	public static int MAX_RANGE = 50;
+	public int MIN_RANGE = 1;
+	public int MAX_RANGE = 50;
 
 	// Binary values (Vertical Row)
-	static ArrayList<String> binaryValues = new ArrayList<String>();
-	static ArrayList<String> binaryValuesReversed = new ArrayList<String>();
+	ArrayList<String> binaryValues = new ArrayList<String>();
+	ArrayList<String> binaryValuesReversed = new ArrayList<String>();
 		
 	// Prime/Fib/Binary values (Horizontal Row)
-	static ArrayList<Integer> mainValues = new ArrayList<Integer>();
+	ArrayList<Integer> mainValues = new ArrayList<Integer>();
 		
 	// Card values
 	static ArrayList<String> cardValues = new ArrayList<String>();
@@ -32,24 +32,22 @@ public class NumberGenerator {
 	static ArrayList<Integer> cardSplitting = new ArrayList<Integer>();
 		
 	// Empty String
-	static String S = "";
+	String S = "";
 	
-	static int previous = 0 , next = 0;
-	
-	
-	/*public static void clear(){
-		if(values.size() > 1){
-			values.clear();
+	public NumberGenerator(int mode , int range){
+		NumberGenerator.SELECTED_MODE = mode;
+		NumberGenerator.SELECTED_RANGE = range;
+	}
+	public static void clear(){
+		if(cardValues.size() > 1){
 			cardValues.clear();
-			binaryValues = null;
-			binaryValues = new String[MAX_RANGE];
-			binaryValuesReversed = null;
-			binaryValuesReversed = new String[MAX_RANGE];
+			cardSplitting.clear();
 			
 		}
-	}*/
+	}
 	// Generate SELECTED_RANGE number of prime numbers (Horizontal row) 
-	public static void PrimeGenerator() {
+	public void PrimeGenerator() {
+		clear();
 		mainValues.add(1);
 		
 		for(int i = 2, counter = 1; i < Integer.MAX_VALUE; i++) {
@@ -67,7 +65,7 @@ public class NumberGenerator {
 	}
 	
 	// Helper function for PrimeGenerator()
-	public static boolean isPrime(int x) {
+	public boolean isPrime(int x) {
 		for(int i = 2; i < x; i++) {
 			if(x % i == 0)
 				return false;
@@ -77,7 +75,8 @@ public class NumberGenerator {
 	
 	
 	// Generate SELECTED_RANGE number of Fibonacci numbers (Horizontal row) 
-	public static void FibGenerator() {
+	public void FibGenerator() {
+		clear();
 		System.out.println("FIBONACCI MODE");
 		System.out.println("Selected Range: " + SELECTED_RANGE);
 		mainValues.add(1);
@@ -95,7 +94,8 @@ public class NumberGenerator {
 	}
 	
 	// Generate SELECTED_RANGE number of Binary numbers (Horizontal row) 
-	public static void BinGenerator() {
+	public void BinGenerator() {
+		clear();
 		System.out.println("BINARY MODE");
 		System.out.println("Selected Range: " + SELECTED_RANGE);
 		
@@ -112,7 +112,7 @@ public class NumberGenerator {
 	}
 	
 	// Fill up binaryValues
-	public static void GenerateBinaryList() {	
+	public void GenerateBinaryList() {	
 		for(int i = 1; i < SELECTED_RANGE + 1; i++) {
 			S = "";
 			int whichNumber = i;
@@ -147,7 +147,7 @@ public class NumberGenerator {
 	}
 	
 	// Fill card values and print
-	public static void GenerateCardValues() {		
+	public void GenerateCardValues() {		
 		for(int i = 0, k = 0; i < NUM_OF_CARDS; i++) {
 			k = 0; // For splitting
 			for(int j = 0; j < SELECTED_RANGE; j++) {
@@ -163,7 +163,7 @@ public class NumberGenerator {
 		SplitCardValues();
 	}
 	// Split card values and print
-	public static void SplitCardValues() {
+	public void SplitCardValues() {
 		for(int i = 0, j = 0; i < NUM_OF_CARDS; i++) {
 			System.out.print("Card " + (i + 1) + " : ");
 			System.out.println(cardValues.subList(j, j = j + cardSplitting.get(i)));
