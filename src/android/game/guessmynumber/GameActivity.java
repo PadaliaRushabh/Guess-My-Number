@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +37,7 @@ public class GameActivity extends FragmentActivity
 	int timeit = 0 ;
 	NumberGenerator generator = new NumberGenerator(3 , 30);
 	String item;
+	String []result = new String[4];
 	 
 	 /*MyResultReceiver resultReceiver;
 	 Intent intent;
@@ -91,14 +93,18 @@ public class GameActivity extends FragmentActivity
     					    	}
     					    	else
     					    		Log.d("you" , "loser");
+    					    	prepareAndStartResultActivity(0);
     					    	finish();
     					    }
+    					    
     					  })
     					.setNegativeButton("I don't Know",
     					  new DialogInterface.OnClickListener() {
     					    public void onClick(DialogInterface dialog,int id) {
+    					    	prepareAndStartResultActivity(1);
     							finish();
     					    }
+    					    
     					  });
     				
     				// create alert dialog
@@ -116,6 +122,33 @@ public class GameActivity extends FragmentActivity
 		intent.putExtra("receiver", resultReceiver);
 		startService(intent);*/
         timeIt();
+	}
+	
+	public void prepareAndStartResultActivity(int status){
+		Time now = new Time();
+		switch(status){
+		case 0:
+			result[0] = item;
+			result[1] = secretNumber.getText().toString();;
+			result[2] = Integer.toString(timeit);
+			result[3] =  now.toString();
+			
+			break;
+		case 1:
+			result[0] = item;
+			result[1] = null;
+			result[2] = Integer.toString(timeit);
+			result[3] = now.toString();
+			
+			break;
+		}
+		startResultActivity();
+	}
+	public void startResultActivity(){
+		
+		Intent intent = new Intent(GameActivity.this , ResultActivity.class);
+		intent.putExtra("result", result);
+		startActivity(intent);
 	}
 	
 	@Override

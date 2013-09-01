@@ -35,19 +35,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.game.guessmynumber.MainActivity" />
         </activity>
-        <service android:enabled="true" android:name=".MyMusic" />
-       <service android:enabled="true" android:name=".TimerService" />
-       <!--<receiver android:name=".TimerService" android:enabled="true">
-            <intent-filter>
-                <action android:name="ToActivity"/>
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".GameActivityPageFragment" android:enabled="true">
-            <intent-filter>
-                <action android:name="ToFragment"/>
-            </intent-filter>
-        </receiver> -->
         
+        <activity 
+            android:name=".ResultActivity" 
+            android:label="@string/app_name"
+            android:parentActivityName="android.game.guessmynumber.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.game.guessmynumber.MainActivity" />
+        </activity>
+       <service android:enabled="true" android:name=".MyMusic" />
     </application>
 
 </manifest>
