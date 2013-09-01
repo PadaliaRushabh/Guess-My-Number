@@ -2,6 +2,7 @@ package android.game.guessmynumber;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -29,7 +31,8 @@ public class GameActivity extends FragmentActivity
 	final Context context = this;
 	Settings setting = new Settings(GameActivity.this);
 	Timer timer = new Timer();
-	TextView timerView;
+	TextView timerView;	
+	EditText secretNumber;
 	int timeit = 0 ;
 	NumberGenerator generator = new NumberGenerator(3 , 30);
 	String item;
@@ -63,13 +66,14 @@ public class GameActivity extends FragmentActivity
             		// get prompts.xml view
     				LayoutInflater li = LayoutInflater.from(context);
     				View promptsView = li.inflate(R.layout.dialog_enter_number, null);
-     
+    				
     				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
     						context);
      
     				// set prompts.xml to alertdialog builder
     				alertDialogBuilder.setView(promptsView);
     				
+    				secretNumber = ((EditText)promptsView.findViewById(R.id.editText_SecretNumber));
     				// set dialog message
     				alertDialogBuilder
     					.setCancelable(false)
@@ -78,6 +82,13 @@ public class GameActivity extends FragmentActivity
     					    public void onClick(DialogInterface dialog,int id) {
     						// get user input and set it to result
     						// edit text
+    					    	String number = secretNumber.getText().toString();
+    					    	Log.d("number", number);
+    					    	if(number.equals(item)){
+    					    		Log.d("you" , "win");
+    					    	}
+    					    	else
+    					    		Log.d("you" , "loser");
     					    	finish();
     					    }
     					  })
