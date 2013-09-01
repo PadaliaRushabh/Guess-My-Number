@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,96 +37,98 @@ public class GameActivity extends FragmentActivity
 	int timeit = 0 ;
 	NumberGenerator generator;
 	String item;
+	String CardMode;
 	String []result = new String[4];
-	 
-	 /*MyResultReceiver resultReceiver;
-	 Intent intent;
-	 TextView txtview;*/
+	
+	boolean TimeFlag = false;
+	int sec = 30;
 
 	/**get the pager from activity_game_developer and set it with adapter**/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_viewpager);
-		//startService(new Intent(GameActivity.this, TimerService.class));
-	
-		//timer.scheduleAtFixedRate(timerTask, 1000, 1000);
-		timerView = (TextView) findViewById(R.id.Timer);
-		System.out.println("ss" + setting.getCardMode());
-		System.out.println("ss" + setting.getRange());
-		//generator.PrimeGenerator();
-		generator = new NumberGenerator(setting.getGameMode() 
-						,(Integer.parseInt(setting.getRange()) + 10));
-		item = generator.selectNumber();		
-		Log.d("item" , item);
-		SecretNumber number = new SecretNumber(item);
 		
+		CardMode = setting.getCardMode();
 		NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
+	
+		generator = new NumberGenerator(setting.getGameMode() 
+				,(Integer.parseInt(setting.getRange()) + 10));
+		
+	 	switch(Integer.parseInt(CardMode)){
+		case 0:
+			break;
+		case 1:
+			TimeFlag = true;
+		case 2:
+			item = generator.selectNumber();		
+			SecretNumber number = new SecretNumber(item);
+			timeIt(TimeFlag);
+			TimeFlag = false;
+		}
+		
+		timerView = (TextView) findViewById(R.id.Timer);
+		
 		mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-            	
-            	if(position == NUM_PAGES - 1){
-            		// get prompts.xml view
-    				LayoutInflater li = LayoutInflater.from(context);
-    				View promptsView = li.inflate(R.layout.dialog_enter_number, null);
-    				
-    				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-    						context);
-     
-    				// set prompts.xml to alertdialog builder
-    				alertDialogBuilder.setView(promptsView);
-    				
-    				secretNumber = ((EditText)promptsView.findViewById(R.id.editText_SecretNumber));
-    				// set dialog message
-    				alertDialogBuilder
-    					.setCancelable(false)
-    					.setPositiveButton("OK",
-    					  new DialogInterface.OnClickListener() {
-    					    public void onClick(DialogInterface dialog,int id) {
-    						// get user input and set it to result
-    						// edit text
-    					    	String number = secretNumber.getText().toString();
-    					    	Log.d("number", number);
-    					    	if(number.equals(item)){
-    					    		Log.d("you" , "win");
-    					    	}
-    					    	else
-    					    		Log.d("you" , "loser");
-    					    	prepareAndStartResultActivity(0);
-    					    	finish();
-    					    }
-    					    
-    					  })
-    					.setNegativeButton("I don't Know",
-    					  new DialogInterface.OnClickListener() {
-    					    public void onClick(DialogInterface dialog,int id) {
-    					    	prepareAndStartResultActivity(1);
-    							finish();
-    					    }
-    					    
-    					  });
-    				
-    				// create alert dialog
-    				AlertDialog alertDialog = alertDialogBuilder.create();
-     
-    				// show it
-    				alertDialog.show();
-            	}
+            	switch(Integer.parseInt(CardMode)){
+        		case 0:
+        			break;
+        		case 1:
+        		case 2:
+        			if(position == NUM_PAGES - 1){
+                		userInputDialog();
+                	}
+        		}
                 invalidateOptionsMenu();
             }
         });   
-        
-        /*resultReceiver = new MyResultReceiver(null);
-        intent = new Intent(this, TimerService.class);
-		intent.putExtra("receiver", resultReceiver);
-		startService(intent);*/
-        timeIt();
 	}
 	
+	public void userInputDialog(){
+		// get prompts.xml view
+		LayoutInflater li = LayoutInflater.from(context);
+		View promptsView = li.inflate(R.layout.dialog_enter_number, null);
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context);
+
+		// set prompts.xml to alertdialog builder
+		alertDialogBuilder.setView(promptsView);
+		
+		secretNumber = ((EditText)promptsView.findViewById(R.id.editText_SecretNumber));
+		// set dialog message
+		alertDialogBuilder
+			.setCancelable(false)
+			.setPositiveButton("OK",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog,int id) {
+				// get user input and set it to result
+				// edit text
+			    	prepareAndStartResultActivity(0);
+			    	finish();
+			    }
+			    
+			  })
+			.setNegativeButton("I don't Know",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog,int id) {
+			    	prepareAndStartResultActivity(1);
+					finish();
+			    }
+			    
+			  });
+		
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
 	public void prepareAndStartResultActivity(int status){
 		Date now = new Date();
 		switch(status){
@@ -193,10 +194,6 @@ public class GameActivity extends FragmentActivity
 			 /*calls the create method from GameActivityPageFragement class
 			  and gets the newly created fragment back which was created from the create
 			  method*/
-			//Log.d("Page No" , Integer.toString(mPager.getCurrentItem()));
-			//Fragment fragment = GameActivityPageFragment.ne 
-			GameActivityPageFragment fragment = GameActivityPageFragment.create(position);
-        	Log.d("Page No" , Integer.toString(fragment.getPageNumber()));
 			return GameActivityPageFragment.create(position);
 		}
 		
@@ -237,7 +234,12 @@ public class GameActivity extends FragmentActivity
 		MyMusic MM = new MyMusic();
 		if(setting.getMusic() == true)
 			MM.pauseSong();
-		
+	}
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		timer.cancel();
 	}
 	//onResume start the music
 	@Override
@@ -248,18 +250,22 @@ public class GameActivity extends FragmentActivity
 			startService(new Intent(this, MyMusic.class));
 	}
 	
-	protected void timeIt(){
+	protected void timeIt(final boolean TimeFlag){
 		timer.schedule(new TimerTask() {
 			public void run() {
 			    timeit++;
 			    runOnUiThread(new Runnable() {
 
-			    @Override
-			    public void run() {
-			    	timerView.setText("Timer:" + timeit);
-			            }
+			    	@Override
+			    	public void run() {
+			    		timerView.setText("Timer:" + timeit);
+			    		if(TimeFlag && timeit == 30){
+					    	timer.cancel();
+					    	userInputDialog();
+					    }
+			    	}
 			    });
-			        }
-		}, 10, 1000);
+			}
+		}, 1000, 1000);
 	}
 }
