@@ -1,6 +1,9 @@
 package android.game.guessmynumber;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import android.content.ClipData.Item;
 
 
 public class NumberGenerator {
@@ -33,6 +36,8 @@ public class NumberGenerator {
 		
 	// Empty String
 	String S = "";
+	
+	private Random randomGenerator = new Random();
 	
 	public NumberGenerator(int mode , int range){
 		NumberGenerator.SELECTED_MODE = mode;
@@ -190,6 +195,14 @@ public class NumberGenerator {
 		}
 		
 		//return cardValues.subList(previous, next);
+	}
+	
+	public String selectNumber(){
+		int index = randomGenerator.nextInt(cardValues.size());
+		String item = cardValues.get(index);
+		
+		return item;
+		
 	}
 
 }
