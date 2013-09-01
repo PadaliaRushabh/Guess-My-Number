@@ -2,17 +2,9 @@ package android.game.guessmynumber;
 
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import android.support.v4.app.Fragment;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +20,8 @@ public class GameActivityPageFragment extends Fragment{
 	 private static int mPageNumber;
 	 public static final String ARG_PAGE = "page";
 	 private ViewGroup rootView;
+	 String isNumber;
+	 SecretNumber number = new SecretNumber();
 
 	 
 	 
@@ -55,8 +49,6 @@ public class GameActivityPageFragment extends Fragment{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mPageNumber = getArguments().getInt(ARG_PAGE); // [optional]Get page number
-		Log.d("create" , "OnCreate");
-		
 		/*if(receiver!=null){
 			IntentFilter intentFilter = new IntentFilter(CUSTOM_INTENT);
 			registerReceiver(receiver, intentFilter);
@@ -73,9 +65,14 @@ public class GameActivityPageFragment extends Fragment{
 		 rootView = (ViewGroup) inflater
 	                .inflate(R.layout.activity_game, container, false);
 		 if(mPageNumber == NumberGenerator.NUM_OF_CARDS){
-			 ((TextView) rootView.findViewById(R.id.pageNumber))
-				.setText("Enter the Number");
+			((TextView) rootView.findViewById(R.id.pageNumber))
+				.setText("Enter the Number");	 
 			 
+			((TextView) rootView.findViewById(R.id.textViewHint))
+				.setText("");
+	     	
+	     	((TextView) rootView.findViewById(R.id.textViewQuestion))
+				.setText("" );
 		 }
 		 else{	
 			numbers2 = NumberGenerator.SplitCardValues(mPageNumber);
@@ -94,6 +91,20 @@ public class GameActivityPageFragment extends Fragment{
 	     									+ Integer.toString(mPageNumber + 1)  
 	     									+ " of "
 	     									+ total_cards);
+	     	
+	     	if(numbers2.contains(number.getNumber())){
+	     		isNumber = "YES";
+	     		((TextView) rootView.findViewById(R.id.textViewHint))
+				.setText(isNumber + " my secret number is on this card");
+	     	}
+	     	else{
+	     		isNumber = "NOT";
+	     		((TextView) rootView.findViewById(R.id.textViewHint))
+				.setText("My secret number is " + isNumber + " on this card");
+	     	}
+	     	
+	     	((TextView) rootView.findViewById(R.id.textViewQuestion))
+				.setText("What do you think the secret number is?" );
 		 }
 		 return rootView;
 	}

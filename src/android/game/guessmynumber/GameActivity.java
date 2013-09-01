@@ -52,8 +52,10 @@ public class GameActivity extends FragmentActivity
 		timerView = (TextView) findViewById(R.id.Timer);
 		
 		generator.PrimeGenerator();
-		item = generator.selectNumber();
+		item = generator.selectNumber();		
 		Log.d("item" , item);
+		SecretNumber number = new SecretNumber(item);
+		
 		NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
 		mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
