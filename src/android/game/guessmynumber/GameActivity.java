@@ -14,12 +14,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.format.Time;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -41,6 +43,7 @@ public class GameActivity extends FragmentActivity
 	String []result = new String[4];
 	String CardMode;
 	boolean TimeFlag = false;
+	boolean swipeable = true;
 	int sec = 30;
 	 
 	 /*MyResultReceiver resultReceiver;
@@ -53,7 +56,6 @@ public class GameActivity extends FragmentActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_viewpager);
 		//startService(new Intent(GameActivity.this, TimerService.class));
-	
 		//timer.scheduleAtFixedRate(timerTask, 1000, 1000);
 		timerView = (TextView) findViewById(R.id.Timer);
 		//generator.PrimeGenerator();
@@ -221,6 +223,7 @@ public class GameActivity extends FragmentActivity
 			return NUM_PAGES;
 		}
 		
+		
 	}
 
 	/**On quit game dialog click**/
@@ -262,16 +265,19 @@ public class GameActivity extends FragmentActivity
 			    timeit++;
 			    runOnUiThread(new Runnable() {
 
-			    @Override
-			    public void run() {
-			    	timerView.setText("Timer:" + timeit);
-		    		if(TimeFlag && timeit == 30 && !((GameActivity.this).isFinishing())){
-				    	timer.cancel();
-				    	userInputDialog();
-				    }
-			    }
+			    	@Override
+			    	public void run() {
+			    		timerView.setText("Timer:" + timeit);
+			    		if(TimeFlag && timeit == 30 && !((GameActivity.this).isFinishing())){
+			    			timer.cancel();
+			    			userInputDialog();
+			    		}
+			    	}
 			    });
 			        }
 		}, 10, 1000);
 	}
+
+
 }
+ 

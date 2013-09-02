@@ -14,7 +14,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 
-public class GameActivityPageFragment extends Fragment{
+public class GameActivityPageFragment extends Fragment {
 	
 	 GridView gridView;
 	 private static int mPageNumber;
@@ -125,5 +125,6 @@ public class GameActivityPageFragment extends Fragment{
 	public int getPageNumber() {
 	        return mPageNumber;
 	}
+	
 
 }
