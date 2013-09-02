@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,25 +38,34 @@ public class GameActivity extends FragmentActivity
 	int timeit = 0 ;
 	NumberGenerator generator;
 	String item;
-	String CardMode;
 	String []result = new String[4];
-	
+	String CardMode;
 	boolean TimeFlag = false;
 	int sec = 30;
+	 
+	 /*MyResultReceiver resultReceiver;
+	 Intent intent;
+	 TextView txtview;*/
 
 	/**get the pager from activity_game_developer and set it with adapter**/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_viewpager);
+		//startService(new Intent(GameActivity.this, TimerService.class));
+	
+		//timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+		timerView = (TextView) findViewById(R.id.Timer);
+		//generator.PrimeGenerator();
+		generator = new NumberGenerator(setting.getGameMode() 
+						,(Integer.parseInt(setting.getRange()) + 10));
+
 		
 		CardMode = setting.getCardMode();
+		Log.d("CardMode" , CardMode);
 		NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
-	
-		generator = new NumberGenerator(setting.getGameMode() 
-				,(Integer.parseInt(setting.getRange()) + 10));
 		
-	 	switch(Integer.parseInt(CardMode)){
+		switch(Integer.parseInt(CardMode)){
 		case 0:
 			break;
 		case 1:
@@ -66,8 +76,7 @@ public class GameActivity extends FragmentActivity
 			timeIt(TimeFlag);
 			TimeFlag = false;
 		}
-		
-		timerView = (TextView) findViewById(R.id.Timer);
+
 		
 		mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -75,6 +84,7 @@ public class GameActivity extends FragmentActivity
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+            	
             	switch(Integer.parseInt(CardMode)){
         		case 0:
         			break;
@@ -88,7 +98,6 @@ public class GameActivity extends FragmentActivity
             }
         });   
 	}
-	
 	public void userInputDialog(){
 		// get prompts.xml view
 		LayoutInflater li = LayoutInflater.from(context);
@@ -162,11 +171,13 @@ public class GameActivity extends FragmentActivity
 		
 		switch(item.getItemId()){
 		case R.id.menu_quit:
-			DialogFragment quitDialog = new QuitGameDialogFragment();
-			quitDialog.show(getFragmentManager() , "quitDialog");
+			if(!((GameActivity.this).isFinishing())){
+				DialogFragment quitDialog = new QuitGameDialogFragment();
+				quitDialog.show(getFragmentManager() , "quitDialog");
+			}
 		}
 		return super.onMenuItemSelected(featureId, item);
-	}
+	}        
 	
 	public void getPosition(){
 		Log.d("Page No" , Integer.toString(mPager.getCurrentItem()));
@@ -234,12 +245,7 @@ public class GameActivity extends FragmentActivity
 		MyMusic MM = new MyMusic();
 		if(setting.getMusic() == true)
 			MM.pauseSong();
-	}
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		timer.cancel();
+		
 	}
 	//onResume start the music
 	@Override
@@ -256,16 +262,16 @@ public class GameActivity extends FragmentActivity
 			    timeit++;
 			    runOnUiThread(new Runnable() {
 
-			    	@Override
-			    	public void run() {
-			    		timerView.setText("Timer:" + timeit);
-			    		if(TimeFlag && timeit == 30){
-					    	timer.cancel();
-					    	userInputDialog();
-					    }
-			    	}
+			    @Override
+			    public void run() {
+			    	timerView.setText("Timer:" + timeit);
+		    		if(TimeFlag && timeit == 30 && !((GameActivity.this).isFinishing())){
+				    	timer.cancel();
+				    	userInputDialog();
+				    }
+			    }
 			    });
-			}
-		}, 1000, 1000);
+			        }
+		}, 10, 1000);
 	}
 }
