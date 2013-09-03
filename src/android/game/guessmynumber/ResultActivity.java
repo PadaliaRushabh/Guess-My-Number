@@ -1,5 +1,7 @@
 package android.game.guessmynumber;
 
+import java.util.Random;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
@@ -39,6 +41,11 @@ public class ResultActivity extends Activity {
 	    }
 	    
 		if(cardMode.equals("0")){
+			 Random random = new Random();
+			 int randomNum = random.nextInt((10 - 1) + 1) + 1;
+			 if(randomNum > 7){
+				 result[0] = Integer.toString(Integer.parseInt(result[0]) + randomNum);
+			 }
 			 mode.setText("App Guess");
 			 message.setText("The Secret Number is " + result[0].toString());
 			 userinput.setVisibility(View.GONE);

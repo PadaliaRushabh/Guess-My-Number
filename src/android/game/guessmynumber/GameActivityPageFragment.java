@@ -25,6 +25,7 @@ public class GameActivityPageFragment extends Fragment {
 	 String isNumber;
 	 SecretNumber number = new SecretNumber();
 	 Random random = new Random();
+	 Settings settings;
 
 	 
 	 
@@ -52,10 +53,8 @@ public class GameActivityPageFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mPageNumber = getArguments().getInt(ARG_PAGE); // [optional]Get page number
-		/*if(receiver!=null){
-			IntentFilter intentFilter = new IntentFilter(CUSTOM_INTENT);
-			registerReceiver(receiver, intentFilter);
-		}*/
+		
+		settings = new Settings(getActivity());
 	 }
 	 /**Called after onCreate
 	  	return GrideView with our ABCD**/
@@ -67,14 +66,23 @@ public class GameActivityPageFragment extends Fragment {
 		 rootView = (ViewGroup) inflater
 	                .inflate(R.layout.activity_game, container, false);
 		 if(mPageNumber == NumberGenerator.NUM_OF_CARDS){
-			((TextView) rootView.findViewById(R.id.pageNumber))
-				.setText("Enter the Number");	 
 			 
-			((TextView) rootView.findViewById(R.id.textViewHint))
-				.setText("");
+			if(settings.getCardMode().equals("0")){
+		     	((TextView) rootView.findViewById(R.id.textViewHint))
+		     		.setText("Thinking....");
+		     	((TextView) rootView.findViewById(R.id.textViewQuestion))
+		     		.setText("Please Wait" );
+		    }
+			else{
+				((TextView) rootView.findViewById(R.id.pageNumber))
+					.setText("Enter the Number");	 
+			 
+				((TextView) rootView.findViewById(R.id.textViewHint))
+					.setText("");
 	     	
-	     	((TextView) rootView.findViewById(R.id.textViewQuestion))
-				.setText("" );
+	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
+	     			.setText("" );
+			}
 		 }
 		 else{	
 			numbers2 = NumberGenerator.SplitCardValues(mPageNumber);
@@ -93,20 +101,29 @@ public class GameActivityPageFragment extends Fragment {
 	     									+ Integer.toString(mPageNumber + 1)  
 	     									+ " of "
 	     									+ total_cards);
-	     	
-	     	if(numbers2.contains(number.getNumber())){
+	     	if(settings.getCardMode().equals("0")){
+	     		((TextView) rootView.findViewById(R.id.textViewHint))
+				.setText("Press yes if your secret number is on this card");
+	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
+				.setText("Press no if your secret number is not on this card" );
+	     	}
+	     	else if(numbers2.contains(number.getNumber())){
 	     		isNumber = "YES";
 	     		((TextView) rootView.findViewById(R.id.textViewHint))
 				.setText(isNumber + " my secret number is on this card");
+	     		
+	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
+				.setText("What do you think the secret number is?" );
 	     	}
 	     	else{
 	     		isNumber = "NOT";
 	     		((TextView) rootView.findViewById(R.id.textViewHint))
 				.setText("My secret number is " + isNumber + " on this card");
+	     		
+	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
+				.setText("What do you think the secret number is?" );
 	     	}
 	     	
-	     	((TextView) rootView.findViewById(R.id.textViewQuestion))
-				.setText("What do you think the secret number is?" );
 		 }
 		 return rootView;
 	}
