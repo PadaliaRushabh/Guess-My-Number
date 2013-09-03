@@ -2,6 +2,8 @@ package android.game.guessmynumber;
 
 
 import java.util.List;
+import java.util.Random;
+
 import android.support.v4.app.Fragment;
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ public class GameActivityPageFragment extends Fragment {
 	 private ViewGroup rootView;
 	 String isNumber;
 	 SecretNumber number = new SecretNumber();
+	 Random random = new Random();
 
 	 
 	 
@@ -59,7 +62,6 @@ public class GameActivityPageFragment extends Fragment {
 	 @Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		 Log.d("createView" , "OnCreateView");
 		 List<String> numbers2 ; 
 		// TODO Auto-generated method stub		
 		 rootView = (ViewGroup) inflater
@@ -76,7 +78,7 @@ public class GameActivityPageFragment extends Fragment {
 		 }
 		 else{	
 			numbers2 = NumberGenerator.SplitCardValues(mPageNumber);
-			
+			java.util.Collections.shuffle(numbers2, random);
 			String[] stockArr = new String[numbers2.size()];
 			stockArr = numbers2.toArray(stockArr);
 			GridView grid=(GridView)rootView.findViewById(R.id.gridViewNumbers);
@@ -111,16 +113,12 @@ public class GameActivityPageFragment extends Fragment {
 	 @Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
-		super.onDestroyView();
-		Log.d("destory" , "DestroyView");
-		
+		super.onDestroyView();	
 	}
 	 @Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
-		super.onAttach(activity);
-		Log.d("attach" , "AttachView");
-		 
+		super.onAttach(activity);	 
 	}
 	public int getPageNumber() {
 	        return mPageNumber;

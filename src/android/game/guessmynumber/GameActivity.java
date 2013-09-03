@@ -1,6 +1,7 @@
 package android.game.guessmynumber;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,17 +37,15 @@ public class GameActivity extends FragmentActivity
 	TextView timerView;	
 	EditText secretNumber;
 	Button btn_no , btn_yes;
-	int timeit = 0 ;
+	int timeit = 0 , sum;
 	NumberGenerator generator;
 	String item;
 	String []result = new String[4];
 	String CardMode;
 	boolean TimeFlag = false;
 	int sec = 30;
+	AppLogic logic ;
 	 
-	 /*MyResultReceiver resultReceiver;
-	 Intent intent;
-	 TextView txtview;*/
 
 	/**get the pager from activity_game_developer and set it with adapter**/
 	@Override
@@ -62,9 +61,6 @@ public class GameActivity extends FragmentActivity
 		CustomViewPager view = new CustomViewPager(getApplicationContext());
 		
 		CardMode = setting.getCardMode();
-		Log.d("CardMode" , CardMode);
-		NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
-		
 		btn_no = (Button)findViewById(R.id.no);
 		btn_yes = (Button)findViewById(R.id.yes);
 		
@@ -72,11 +68,13 @@ public class GameActivity extends FragmentActivity
 		case 0:
 			btn_no.setVisibility(View.VISIBLE);
 			btn_yes.setVisibility(View.VISIBLE);
+			NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1 ;
 			view.setSwipe(false);
 			break;
 		case 1:
 			TimeFlag = true;
 		case 2:
+			NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
 			view.setSwipe(true);
 			btn_no.setVisibility(View.GONE);
 			btn_yes.setVisibility(View.GONE);
@@ -96,6 +94,11 @@ public class GameActivity extends FragmentActivity
             	
             	switch(Integer.parseInt(CardMode)){
         		case 0:
+        			if(position == NUM_PAGES -1 ){
+        				sum = logic.getSum();
+        				prepareAndStartResultActivity(2);
+        				System.out.println(position + " " + NUM_PAGES);
+        			}
         			break;
         		case 1:
         		case 2:
@@ -164,6 +167,12 @@ public class GameActivity extends FragmentActivity
 			result[3] = now.toString();
 			
 			break;
+		case 2:
+			result[0] = Integer.toString(sum);
+			result[1] = null;
+			result[2] = Integer.toString(timeit);
+			result[3] = now.toString();
+			
 		}
 		startResultActivity();
 	}
@@ -290,6 +299,9 @@ public class GameActivity extends FragmentActivity
 			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
 			break;
 		case R.id.yes:
+			 List<String> numbers = NumberGenerator.SplitCardValues(mPager.getCurrentItem());
+			 logic = new AppLogic(numbers);
+			 logic.setSmallest();
 			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
 			break;
 		}
