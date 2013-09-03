@@ -14,14 +14,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -37,13 +35,13 @@ public class GameActivity extends FragmentActivity
 	Timer timer = new Timer();
 	TextView timerView;	
 	EditText secretNumber;
+	Button btn_no , btn_yes;
 	int timeit = 0 ;
 	NumberGenerator generator;
 	String item;
 	String []result = new String[4];
 	String CardMode;
 	boolean TimeFlag = false;
-	boolean swipeable = true;
 	int sec = 30;
 	 
 	 /*MyResultReceiver resultReceiver;
@@ -55,24 +53,33 @@ public class GameActivity extends FragmentActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_viewpager);
-		//startService(new Intent(GameActivity.this, TimerService.class));
-		//timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+	
 		timerView = (TextView) findViewById(R.id.Timer);
 		//generator.PrimeGenerator();
 		generator = new NumberGenerator(setting.getGameMode() 
 						,(Integer.parseInt(setting.getRange()) + 10));
 
+		CustomViewPager view = new CustomViewPager(getApplicationContext());
 		
 		CardMode = setting.getCardMode();
 		Log.d("CardMode" , CardMode);
 		NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
 		
+		btn_no = (Button)findViewById(R.id.no);
+		btn_yes = (Button)findViewById(R.id.yes);
+		
 		switch(Integer.parseInt(CardMode)){
 		case 0:
+			btn_no.setVisibility(View.VISIBLE);
+			btn_yes.setVisibility(View.VISIBLE);
+			view.setSwipe(false);
 			break;
 		case 1:
 			TimeFlag = true;
 		case 2:
+			view.setSwipe(true);
+			btn_no.setVisibility(View.GONE);
+			btn_yes.setVisibility(View.GONE);
 			item = generator.selectNumber();		
 			SecretNumber number = new SecretNumber(item);
 			timeIt(TimeFlag);
@@ -190,6 +197,7 @@ public class GameActivity extends FragmentActivity
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.inside_game_menu, menu);
+		
 		return true;
 	}
 	/**adapter**/
@@ -222,8 +230,6 @@ public class GameActivity extends FragmentActivity
 			// TODO Auto-generated method stub
 			return NUM_PAGES;
 		}
-		
-		
 	}
 
 	/**On quit game dialog click**/
@@ -277,7 +283,16 @@ public class GameActivity extends FragmentActivity
 			        }
 		}, 10, 1000);
 	}
-
-
+	
+	public void onDecisionBtnClick(View view){
+		switch(view.getId()){
+		case R.id.no:
+			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+			break;
+		case R.id.yes:
+			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+			break;
+		}
+	}
 }
- 
+
