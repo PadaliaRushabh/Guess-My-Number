@@ -19,6 +19,7 @@ public class ResultActivity extends Activity {
 	String msg;
 	Settings S;
 	String cardMode;
+	MaintainDatabase maintainDB;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -68,7 +69,11 @@ public class ResultActivity extends Activity {
 	    	 	if(result[1].toString().equals(result[0].toString())){
 	    		msg = "You input " + result[1].toString() + " and secret number is " 
 	    				+ result[0].toString()+"\nYou Win";
-	    	
+	    		
+	    		//Insert into Database
+	    	    maintainDB = new MaintainDatabase(getApplicationContext(), result[4], result[2].toString()
+	    	    													, result[3].toString());
+	    	    maintainDB.insertToDatabase();
 	    		}
 	    		else{
 	    			msg = "You input " + result[1].toString() + " and secret number is " 

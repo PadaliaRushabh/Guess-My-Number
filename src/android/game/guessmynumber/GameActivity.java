@@ -40,8 +40,9 @@ public class GameActivity extends FragmentActivity
 	int timeit = 0 , sum;
 	NumberGenerator generator;
 	String item;
-	String []result = new String[4];
+	String []result = new String[5];
 	String CardMode;
+	String name;
 	boolean TimeFlag = false;
 	int sec = 30;
 	AppLogic logic ;
@@ -57,7 +58,12 @@ public class GameActivity extends FragmentActivity
 		//generator.PrimeGenerator();
 		generator = new NumberGenerator(setting.getGameMode() 
 						,(Integer.parseInt(setting.getRange()) + 10));
-
+		
+		Bundle extras = getIntent().getExtras();
+	    if (extras != null) {
+	    	name = extras.getString("name");
+	    }
+	    
 		CustomViewPager view = new CustomViewPager(getApplicationContext());
 		
 		CardMode = setting.getCardMode();
@@ -97,7 +103,6 @@ public class GameActivity extends FragmentActivity
         			if(position == NUM_PAGES -1 ){
         				sum = logic.getSum();
         				prepareAndStartResultActivity(2);
-        				System.out.println(position + " " + NUM_PAGES);
         			}
         			break;
         		case 1:
@@ -158,6 +163,7 @@ public class GameActivity extends FragmentActivity
 			result[1] = secretNumber.getText().toString();;
 			result[2] = Integer.toString(timeit);
 			result[3] =  now.toString();
+			result[4] = name;
 			
 			break;
 		case 1:
@@ -165,6 +171,7 @@ public class GameActivity extends FragmentActivity
 			result[1] = null;
 			result[2] = Integer.toString(timeit);
 			result[3] = now.toString();
+			result[4] = name;
 			
 			break;
 		case 2:
@@ -172,6 +179,7 @@ public class GameActivity extends FragmentActivity
 			result[1] = null;
 			result[2] = Integer.toString(timeit);
 			result[3] = now.toString();
+			result[4] = name;
 			
 		}
 		startResultActivity();
