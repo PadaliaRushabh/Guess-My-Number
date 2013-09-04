@@ -43,7 +43,7 @@ public class ResultActivity extends Activity {
 		if(cardMode.equals("0")){
 			 Random random = new Random();
 			 int randomNum = random.nextInt((10 - 1) + 1) + 1;
-			 if(randomNum > 7){
+			 if(randomNum < 7){
 				 result[0] = Integer.toString(Integer.parseInt(result[0]) + randomNum);
 			 }
 			 mode.setText("App Guess");
