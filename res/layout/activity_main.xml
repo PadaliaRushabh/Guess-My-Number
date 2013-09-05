@@ -1,41 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity"
-    android:background="@drawable/background" >
-
-    <TextView
-        android:id="@+id/textViewGameModeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="87dp"
-        android:text="@string/name_diaplay"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewGameModeLabel"
-        android:layout_below="@+id/textViewGameModeLabel"
-        android:layout_marginTop="82dp"
-        android:text="@string/user_name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
 
     <EditText
         android:id="@+id/txt_UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
         android:ems="10"
+        android:hint="Input Name"
         android:inputType="textPersonName" >
 
         <requestFocus />
@@ -43,11 +20,10 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="174dp"
+        android:layout_height="172dp"
         android:layout_below="@+id/txt_UserName"
-        android:layout_centerHorizontal="true"
-        android:text="@string/start_game" 
-        android:onClick="startGame"/>
+        android:background="@drawable/start"
+        android:onClick="startGame" />
 
-</RelativeLayout>
+</LinearLayout>

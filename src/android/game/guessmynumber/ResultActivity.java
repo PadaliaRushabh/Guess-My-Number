@@ -11,12 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ResultActivity extends Activity {
 
 	String []result = new String[4];
-	TextView mode , userinput , userinputdate  , highscore , highscoredate;
 	ImageView image1 , image2;
 	String msg;
 	Settings S;
@@ -30,14 +30,7 @@ public class ResultActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
 		S = new Settings(getApplicationContext());
-		
-	    mode = (TextView)findViewById(R.id.TextViewMode);
-	    userinput = (TextView)findViewById(R.id.TextViewScore);
-	    userinputdate = (TextView)findViewById(R.id.TextViewScoreDate);
-	    //message = (TextView)findViewById(R.id.TextViewMessage);
-	    highscore = (TextView)findViewById(R.id.TextViewHighScore);
-	    highscoredate = (TextView)findViewById(R.id.TextViewHighScoreDate);
-	    
+
 	    image1 = (ImageView) findViewById(R.id.imageView1);
 	    image2 = (ImageView) findViewById(R.id.imageView2);
 		cardMode = S.getCardMode();
@@ -64,42 +57,26 @@ public class ResultActivity extends Activity {
 			 if(randomNum < 7){
 				 result[0] = Integer.toString(Integer.parseInt(result[0]) + randomNum);
 			 }
-			 mode.setText("App Guess");
-			 //message.setText("The Secret Number is " + result[0].toString());
-			 userinput.setVisibility(View.GONE);
-			 userinputdate.setVisibility(View.GONE);
-			 highscore.setVisibility(View.GONE);
-			 highscoredate.setVisibility(View.GONE);
 		}
 		else{
-			
-			mode.setText("User Guess");
-	    	userinputdate.setText(result[3].toString());
-	    	if(result[1] == null){
-	    		msg = "The secret number is " + result[0].toString();
-	    		userinput.setText("You didnot enter any answer but took " 
-	    				+ result[2].toString() + " Sec");
+			RelativeLayout resultbackground = (RelativeLayout)findViewById(R.id.resultBackground);
+	    	if(result[1] == null || !result[1].toString().equals(result[0].toString())){
+	    		int idwin = getResources().getIdentifier(
+	    	 	    	"try", "drawable", getPackageName());
+	    	 	resultbackground.setBackgroundResource(idwin);
+	    		
 	    	}
 	    	else{
-	    	 	userinput.setText("You Entered " + result[1].toString() + " in " 
- 					+ result[2].toString() + " Sec");
-	    	 	if(result[1].toString().equals(result[0].toString())){
-	    		msg = "You input " + result[1].toString() + " and secret number is " 
-	    				+ result[0].toString()+"\nYou Win";
+	    	 	int idwin = getResources().getIdentifier(
+	    	 	    	"firework", "drawable", getPackageName());
+	    	 	resultbackground.setBackgroundResource(idwin);
 	    		
 	    		//Insert into Database
 	    	    maintainDB = new MaintainDatabase(getApplicationContext(), result[4], result[2].toString()
 	    	    													, result[3].toString());
 	    	    maintainDB.insertToDatabase();
-	    		}
-	    		else{
-	    			msg = "You input " + result[1].toString() + " and secret number is " 
-	    			+ result[0].toString()+"\nBetter luck next time";
-	    		}
+	    		
 	    	}
-	    	//message.setText(msg);
-	    	highscore.setText("HighScore: 23 Sec");
-	    	highscoredate.setText(result[3].toString());
 		}
 	}
 	
