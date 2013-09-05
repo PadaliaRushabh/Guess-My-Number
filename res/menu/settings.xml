@@ -4,18 +4,21 @@
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
+        android:title="Settings"
         android:icon="@android:drawable/ic_menu_preferences"/>
      
      <item
         android:id="@+id/menu_help"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
+        android:title="Help"
         android:icon="@android:drawable/ic_menu_help"/>
      
      <item
         android:id="@+id/menu_score"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
+        android:title="High Score"
         android:icon="@android:drawable/ic_menu_more"/>
     
 </menu>
