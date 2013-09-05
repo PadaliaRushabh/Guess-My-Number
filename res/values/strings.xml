@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Guess My Number</string>
+    <string name="action_settings">Settings</string>
+    <string name="name_diaplay">Guess My Number</string>
+    <string name="user_name">User Name</string>
+    <string name="start_game">Start</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="quit_alert_message">Do you want to quit the game? </string>
+    <string name="quit_alert_title">Quit Game </string>
+    <string name="quit_alert_yes">Yes</string>
+    <string name="quit_alert_cancel">Cancel</string>
+    <string name="title_activity_score">HighScore</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>
