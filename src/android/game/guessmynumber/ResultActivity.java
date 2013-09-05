@@ -62,7 +62,7 @@ public class ResultActivity extends Activity {
 			RelativeLayout resultbackground = (RelativeLayout)findViewById(R.id.resultBackground);
 	    	if(result[1] == null || !result[1].toString().equals(result[0].toString())){
 	    		int idwin = getResources().getIdentifier(
-	    	 	    	"try", "drawable", getPackageName());
+	    	 	    	"tryagain", "drawable", getPackageName());
 	    	 	resultbackground.setBackgroundResource(idwin);
 	    		
 	    	}

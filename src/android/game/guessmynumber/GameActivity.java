@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -89,12 +90,14 @@ public class GameActivity extends FragmentActivity
 			timeIt(TimeFlag);
 			TimeFlag = false;
 		}
-
+		
+		setbackground();
 		
 		mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        	
             @Override
             public void onPageSelected(int position) {
             	
@@ -111,9 +114,19 @@ public class GameActivity extends FragmentActivity
                 		userInputDialog();
                 	}
         		}
+            	setbackground();
                 invalidateOptionsMenu();
             }
         });   
+	}
+	public void setbackground(){
+		DisplayResult displayResult = new DisplayResult();
+ 	    String imageName = displayResult.returnbackgroundName();
+ 	    int id1 = getResources().getIdentifier(
+ 	    		imageName, "drawable", getPackageName() );
+
+ 	    LinearLayout layout = (LinearLayout)findViewById(R.id.gamelayout);
+ 	    layout.setBackgroundResource(id1);
 	}
 	public void userInputDialog(){
 		// get prompts.xml view
