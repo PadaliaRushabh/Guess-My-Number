@@ -7,40 +7,42 @@
     android:id="@+id/gamelayout">
     
 <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|top"
-        android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="374dp"
+    android:gravity="center|top"
+    android:orientation="vertical" >
         
     <TextView
         android:id="@+id/Timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Timer:0" />
-   
+    
+
     <android.game.guessmynumber.CustomViewPager
         android:id="@+id/pager"
         android:layout_width="wrap_content"
         android:layout_height="404dp" />
-
-</LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center|bottom"
         android:orientation="horizontal" >
 
-        <Button 
+        <Button
             android:id="@+id/no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No" 
-            android:onClick="onDecisionBtnClick"/>
+            android:layout_width="77dp"
+            android:layout_height="84dp"
+            android:background="@drawable/no"
+            android:onClick="onDecisionBtnClick"
+            android:layout_marginRight="20dp"/>
+
         <Button
             android:id="@+id/yes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yes" 
+            android:layout_width="77dp"
+            android:layout_height="84dp"
+            android:background="@drawable/yes"
             android:onClick="onDecisionBtnClick"/>
     </LinearLayout>
    
