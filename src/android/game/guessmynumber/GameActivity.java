@@ -38,7 +38,7 @@ public class GameActivity extends FragmentActivity
 	TextView timerView;	
 	EditText secretNumber;
 	Button btn_no , btn_yes;
-	int timeit = 0 , sum;
+	int timeit = 0 , sum = 0;
 	NumberGenerator generator;
 	String item;
 	String []result = new String[5];
@@ -104,7 +104,7 @@ public class GameActivity extends FragmentActivity
             	switch(Integer.parseInt(CardMode)){
         		case 0:
         			if(position == NUM_PAGES -1 ){
-        				sum = logic.getSum();
+        				//sum = logic.getSum();
         				prepareAndStartResultActivity(2);
         			}
         			break;
@@ -312,7 +312,7 @@ public class GameActivity extends FragmentActivity
 			    	}
 			    });
 			        }
-		}, 10, 1000);
+		}, 10000, 1000);
 	}
 	
 	public void onDecisionBtnClick(View view){
@@ -323,7 +323,7 @@ public class GameActivity extends FragmentActivity
 		case R.id.yes:
 			 List<String> numbers = NumberGenerator.SplitCardValues(mPager.getCurrentItem());
 			 logic = new AppLogic(numbers);
-			 logic.setSmallest();
+			 sum = logic.getSmallest() + sum;
 			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
 			break;
 		}
