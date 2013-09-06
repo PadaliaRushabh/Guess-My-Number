@@ -92,7 +92,7 @@ public class GameActivityPageFragment extends Fragment {
 			GridView grid=(GridView)rootView.findViewById(R.id.gridViewNumbers);
 		 
 		 	ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-					android.R.layout.simple_list_item_1, stockArr);
+					R.layout.customgrideview, stockArr);
 		 	grid.setAdapter(adapter);
 		 	// Set the title view to show the page number.
 		 	int total_cards = NumberGenerator.NUM_OF_CARDS + 1;

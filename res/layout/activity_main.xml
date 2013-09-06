@@ -13,7 +13,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Input Name"
-        android:inputType="textPersonName" >
+        android:inputType="textPersonName" 
+        android:background="@android:color/background_light"
+        android:paddingTop="10dp">
 
         <requestFocus />
     </EditText>
