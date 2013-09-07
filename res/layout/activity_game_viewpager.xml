@@ -48,18 +48,23 @@
      
         <Button
             android:id="@+id/no"
-            android:layout_width="77dp"
-            android:layout_height="84dp"
-            android:background="@drawable/no"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:onClick="onDecisionBtnClick"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="10dp"
+            android:text="No"
+            android:textColor="#CC0000"/>
 
         <Button
             android:id="@+id/yes"
-            android:layout_width="77dp"
-            android:layout_height="84dp"
-            android:background="@drawable/yes"
-            android:onClick="onDecisionBtnClick" />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:onClick="onDecisionBtnClick"
+            android:layout_marginLeft="10dp"
+            android:text="Yes"
+            android:textColor="#3399CC" />
     
 </LinearLayout>
 </LinearLayout>   
