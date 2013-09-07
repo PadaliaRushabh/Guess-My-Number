@@ -10,6 +10,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,7 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -34,8 +35,9 @@ public class GameActivity extends FragmentActivity
 	private PagerAdapter mPagerAdapter;
 	final Context context = this;
 	Settings setting = new Settings(GameActivity.this);
+	SecretNumber number;
 	Timer timer = new Timer();
-	TextView timerView;	
+	TextView timerView, textViewHint;	
 	EditText secretNumber;
 	Button btn_no , btn_yes;
 	int timeit = 0 , sum = 0;
@@ -45,6 +47,7 @@ public class GameActivity extends FragmentActivity
 	String CardMode;
 	String name;
 	boolean TimeFlag = false;
+	boolean colorChange = false;
 	int sec = 30;
 	AppLogic logic ;
 	 
@@ -56,6 +59,7 @@ public class GameActivity extends FragmentActivity
 		setContentView(R.layout.activity_game_viewpager);
 	
 		timerView = (TextView) findViewById(R.id.Timer);
+		textViewHint = (TextView) findViewById(R.id.textViewHint);
 		//generator.PrimeGenerator();
 		generator = new NumberGenerator(setting.getGameMode() 
 						,(Integer.parseInt(setting.getRange()) + 10));
@@ -77,6 +81,7 @@ public class GameActivity extends FragmentActivity
 			btn_yes.setVisibility(View.VISIBLE);
 			NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1 ;
 			view.setSwipe(false);
+			textViewHint.setText("Is your secret number on this card?");
 			break;
 		case 1:
 			TimeFlag = true;
@@ -86,9 +91,18 @@ public class GameActivity extends FragmentActivity
 			btn_no.setVisibility(View.GONE);
 			btn_yes.setVisibility(View.GONE);
 			item = generator.selectNumber();		
-			SecretNumber number = new SecretNumber(item);
+			number = new SecretNumber(item);
 			timeIt(TimeFlag);
 			TimeFlag = false;
+			List<String> numbers2 ; 
+			numbers2 = NumberGenerator.SplitCardValues(0);
+			if(numbers2.contains(number.getNumber())){
+				textViewHint.setText("Secret number is on this card");
+			}
+			else{
+				textViewHint.setText("Secret number is NOT on this card");
+			}
+			
 		}
 		
 		setbackground();
@@ -103,9 +117,13 @@ public class GameActivity extends FragmentActivity
             	
             	switch(Integer.parseInt(CardMode)){
         		case 0:
+        			
         			if(position == NUM_PAGES -1 ){
         				//sum = logic.getSum();
         				prepareAndStartResultActivity(2);
+        			}
+        			else{
+        				textViewHint.setText("Is your secret number on this card?");
         			}
         			break;
         		case 1:
@@ -113,6 +131,16 @@ public class GameActivity extends FragmentActivity
         			if(position == NUM_PAGES - 1){
                 		userInputDialog();
                 	}
+        			else{
+        				List<String> numbers2 ; 
+            			numbers2 = NumberGenerator.SplitCardValues(position);
+            			if(numbers2.contains(number.getNumber())){
+            				textViewHint.setText("Secret number is on this card");
+            			}
+            			else{
+            				textViewHint.setText("Secret number is NOT on this card");
+            			}
+        			}
         		}
             	setbackground();
                 invalidateOptionsMenu();
@@ -125,7 +153,7 @@ public class GameActivity extends FragmentActivity
  	    int id1 = getResources().getIdentifier(
  	    		imageName, "drawable", getPackageName() );
 
- 	    LinearLayout layout = (LinearLayout)findViewById(R.id.gamelayout);
+ 	    RelativeLayout layout = (RelativeLayout)findViewById(R.id.gamelayout);
  	    layout.setBackgroundResource(id1);
 	}
 	public void userInputDialog(){
@@ -297,6 +325,7 @@ public class GameActivity extends FragmentActivity
 	}
 	
 	protected void timeIt(final boolean TimeFlag){
+		
 		timer.schedule(new TimerTask() {
 			public void run() {
 			    timeit++;
@@ -309,10 +338,20 @@ public class GameActivity extends FragmentActivity
 			    			timer.cancel();
 			    			userInputDialog();
 			    		}
+			    		if(timeit > 19){
+			    			if(colorChange){
+			    				timerView.setTextColor(Color.RED);
+			    				colorChange = false;
+			    			}
+			    			else{
+			    				timerView.setTextColor(Color.CYAN);
+			    				colorChange = true;
+			    			}
+			    		}
 			    	}
 			    });
 			        }
-		}, 10000, 1000);
+		}, 1000, 1000);
 	}
 	
 	public void onDecisionBtnClick(View view){

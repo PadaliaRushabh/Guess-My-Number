@@ -68,20 +68,15 @@ public class GameActivityPageFragment extends Fragment {
 		 if(mPageNumber == NumberGenerator.NUM_OF_CARDS){
 			 
 			if(settings.getCardMode().equals("0")){
-		     	((TextView) rootView.findViewById(R.id.textViewHint))
-		     		.setText("Thinking....");
-		     	((TextView) rootView.findViewById(R.id.textViewQuestion))
-		     		.setText("Please Wait" );
+		     	/*((TextView) rootView.findViewById(R.id.textViewHint))
+		     		.setText("Thinking....");*/
 		    }
 			else{
 				((TextView) rootView.findViewById(R.id.pageNumber))
 					.setText("Enter the Number");	 
 			 
-				((TextView) rootView.findViewById(R.id.textViewHint))
-					.setText("");
-	     	
-	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
-	     			.setText("" );
+				/*((TextView) rootView.findViewById(R.id.textViewHint))
+					.setText("");*/
 			}
 		 }
 		 else{	
@@ -101,28 +96,18 @@ public class GameActivityPageFragment extends Fragment {
 	     									+ Integer.toString(mPageNumber + 1)  
 	     									+ " of "
 	     									+ total_cards);
-	     	if(settings.getCardMode().equals("0")){
+	     	/*if(settings.getCardMode().equals("0")){
 	     		((TextView) rootView.findViewById(R.id.textViewHint))
-				.setText("Press yes if your secret number is on this card");
-	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
-				.setText("Press no if your secret number is not on this card" );
+				.setText("Is your secret number on this card?");
 	     	}
 	     	else if(numbers2.contains(number.getNumber())){
-	     		isNumber = "YES";
 	     		((TextView) rootView.findViewById(R.id.textViewHint))
-				.setText(isNumber + " my secret number is on this card");
-	     		
-	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
-				.setText("What do you think the secret number is?" );
+				.setText("Secret number is on this card");
 	     	}
 	     	else{
-	     		isNumber = "NOT";
 	     		((TextView) rootView.findViewById(R.id.textViewHint))
-				.setText("My secret number is " + isNumber + " on this card");
-	     		
-	     		((TextView) rootView.findViewById(R.id.textViewQuestion))
-				.setText("What do you think the secret number is?" );
-	     	}
+				.setText("Secret number is NOT on this card");
+	     	}*/
 	     	
 		 }
 		 return rootView;
@@ -140,6 +125,4 @@ public class GameActivityPageFragment extends Fragment {
 	public int getPageNumber() {
 	        return mPageNumber;
 	}
-	
-
 }
