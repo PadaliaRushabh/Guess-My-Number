@@ -96,8 +96,6 @@ public class NumberGenerator {
 	// Generate SELECTED_RANGE number of Fibonacci numbers (Horizontal row) 
 	public void FibGenerator() {
 		clear();
-		System.out.println("FIBONACCI MODE");
-		System.out.println("Selected Range: " + SELECTED_RANGE);
 		mainValues.add(1);
 		mainValues.add(2);
 		
@@ -212,7 +210,7 @@ public class NumberGenerator {
 	}
 	
 	public String selectNumber(){
-		int index = randomGenerator.nextInt(cardValues.size());
+		int index = randomGenerator.nextInt(cardValues.size() - 1);
 		String item = cardValues.get(index);
 		
 		return item;

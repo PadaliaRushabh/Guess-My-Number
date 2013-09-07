@@ -1,5 +1,7 @@
 package android.game.guessmynumber;
 
+import java.util.Random;
+
 
 public class DisplayResult {
 
@@ -16,6 +18,9 @@ public class DisplayResult {
 		}
 		
 	}
+	public DisplayResult(){
+		
+	}
 	
 	public String[] returnName(){
 		String numbers[] = new String[2];
@@ -25,7 +30,31 @@ public class DisplayResult {
 		
 		return numbers;
 	}
+	public String returnbackgroundName(){
+		return switchBackground();
+	}
 	
+	private String switchBackground(){
+		Random rand = new Random();
+		int number = rand.nextInt(4);
+		System.out.println(number);
+		String num = null;
+		switch(number){
+		case 0:
+			num =  "w1";
+			break;
+		case 1:
+			num = "w2";
+			break;
+		case 2:
+			num =  "w3";
+			break;
+		case 3:
+			num = "w4";
+			break;
+		}
+		return num;
+	}
 	private String switchNumber(int number){
 		String num = null;
 		switch(number){

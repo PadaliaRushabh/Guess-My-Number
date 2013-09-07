@@ -7,7 +7,7 @@ public class AppLogic {
 	
 	List<String> NumberList;
 	List<Integer> IntList = new ArrayList<Integer>();
-	static int  number = 0;
+	int  number = 0;
 	
 	public AppLogic(List<String> NumberList){
 		this.NumberList = NumberList;
@@ -20,16 +20,19 @@ public class AppLogic {
 		java.util.Collections.sort(IntList);
 	}
 	
-	public void setSmallest(){
+	public int getSmallest(){
 		sortList();
-		add(IntList.get(0));
+		return IntList.get(0);
+		
+		//System.out.println("Get:" + IntList.get(0));
 	}
 	
 	public void add(int number){
-		AppLogic.number = AppLogic.number + number;  
+		this.number = this.number + number;  
+		System.out.println("APP:" + this.number);
 	}
 	
-	public int getSum(){
-		return AppLogic.number;
-	}
+	/*public int getSum(){
+		return this.number;
+	}*/
 }

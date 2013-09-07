@@ -22,9 +22,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		Name = (EditText)findViewById(R.id.txt_UserName);
-		//Settings setting = new Settings(MainActivity.this);
-		if(setting.getMusic())
-			startService(new Intent(this, MyMusic.class));
 	}
 
 	/**On setting clicked open settingActivity**/
@@ -63,31 +60,6 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(MainActivity.this, GameActivity.class);
 		intent.putExtra("name", name);
 		startActivity(intent);
-	}
-	
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		MyMusic MM = new MyMusic();
-		// check if music is playing
-		if(setting.getMusic() == true)
-			MM.pauseSong();
-		
-	}
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if(setting.getMusic())
-			startService(new Intent(this, MyMusic.class));
-	}
-	
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		stopService(new Intent(this, MyMusic.class));
 	}
 
 }

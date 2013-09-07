@@ -28,7 +28,6 @@ public class SettingActivity extends Activity{
 	String rangeDisplay = "Range: 1 - ";
 	int range , card_mode ,game_mode ;
 	RadioGroup card , game;
-	MyMusic MM = new MyMusic();
 	Settings setting = new Settings(SettingActivity.this);
 	
 	@Override
@@ -44,7 +43,7 @@ public class SettingActivity extends Activity{
 		//find switch 
 		switchMusic = (Switch) findViewById(R.id.switchMusic);
 		//set listener on switch to toggel music on and off
-		switchMusic.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		/*switchMusic.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -56,7 +55,7 @@ public class SettingActivity extends Activity{
 					startService(new Intent(SettingActivity.this, MyMusic.class));
 				}
 			}
-		});
+		});*/
 		
 		//set listener on seekbar
 		seekbar.setOnSeekBarChangeListener( new OnSeekBarChangeListener() {
@@ -156,24 +155,6 @@ public class SettingActivity extends Activity{
 		Toast toast = Toast.makeText(this,"Preferences Saved", Toast.LENGTH_SHORT);
 		toast.show();
 		finish();
-	}
-	
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		MyMusic MM = new MyMusic();
-		if(setting.getMusic() == true)
-			MM.pauseSong();
-		
-	}
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if(setting.getMusic())
-			startService(new Intent(this, MyMusic.class));
-		setSwitch();
 	}
 	
 	protected void setSwitch(){

@@ -10,6 +10,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -33,17 +35,19 @@ public class GameActivity extends FragmentActivity
 	private PagerAdapter mPagerAdapter;
 	final Context context = this;
 	Settings setting = new Settings(GameActivity.this);
+	SecretNumber number;
 	Timer timer = new Timer();
-	TextView timerView;	
+	TextView timerView, textViewHint;	
 	EditText secretNumber;
 	Button btn_no , btn_yes;
-	int timeit = 0 , sum;
+	int timeit = 0 , sum = 0;
 	NumberGenerator generator;
 	String item;
 	String []result = new String[5];
 	String CardMode;
 	String name;
 	boolean TimeFlag = false;
+	boolean colorChange = false;
 	int sec = 30;
 	AppLogic logic ;
 	 
@@ -55,6 +59,7 @@ public class GameActivity extends FragmentActivity
 		setContentView(R.layout.activity_game_viewpager);
 	
 		timerView = (TextView) findViewById(R.id.Timer);
+		textViewHint = (TextView) findViewById(R.id.textViewHint);
 		//generator.PrimeGenerator();
 		generator = new NumberGenerator(setting.getGameMode() 
 						,(Integer.parseInt(setting.getRange()) + 10));
@@ -76,6 +81,7 @@ public class GameActivity extends FragmentActivity
 			btn_yes.setVisibility(View.VISIBLE);
 			NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1 ;
 			view.setSwipe(false);
+			textViewHint.setText("Is your secret number on this card?");
 			break;
 		case 1:
 			TimeFlag = true;
@@ -85,24 +91,39 @@ public class GameActivity extends FragmentActivity
 			btn_no.setVisibility(View.GONE);
 			btn_yes.setVisibility(View.GONE);
 			item = generator.selectNumber();		
-			SecretNumber number = new SecretNumber(item);
+			number = new SecretNumber(item);
 			timeIt(TimeFlag);
 			TimeFlag = false;
+			List<String> numbers2 ; 
+			numbers2 = NumberGenerator.SplitCardValues(0);
+			if(numbers2.contains(number.getNumber())){
+				textViewHint.setText("Secret number is on this card");
+			}
+			else{
+				textViewHint.setText("Secret number is NOT on this card");
+			}
+			
 		}
-
+		
+		setbackground();
 		
 		mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        	
             @Override
             public void onPageSelected(int position) {
             	
             	switch(Integer.parseInt(CardMode)){
         		case 0:
+        			
         			if(position == NUM_PAGES -1 ){
-        				sum = logic.getSum();
+        				//sum = logic.getSum();
         				prepareAndStartResultActivity(2);
+        			}
+        			else{
+        				textViewHint.setText("Is your secret number on this card?");
         			}
         			break;
         		case 1:
@@ -110,10 +131,30 @@ public class GameActivity extends FragmentActivity
         			if(position == NUM_PAGES - 1){
                 		userInputDialog();
                 	}
+        			else{
+        				List<String> numbers2 ; 
+            			numbers2 = NumberGenerator.SplitCardValues(position);
+            			if(numbers2.contains(number.getNumber())){
+            				textViewHint.setText("Secret number is on this card");
+            			}
+            			else{
+            				textViewHint.setText("Secret number is NOT on this card");
+            			}
+        			}
         		}
+            	setbackground();
                 invalidateOptionsMenu();
             }
         });   
+	}
+	public void setbackground(){
+		DisplayResult displayResult = new DisplayResult();
+ 	    String imageName = displayResult.returnbackgroundName();
+ 	    int id1 = getResources().getIdentifier(
+ 	    		imageName, "drawable", getPackageName() );
+
+ 	    RelativeLayout layout = (RelativeLayout)findViewById(R.id.gamelayout);
+ 	    layout.setBackgroundResource(id1);
 	}
 	public void userInputDialog(){
 		// get prompts.xml view
@@ -263,27 +304,8 @@ public class GameActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		
 	} 
-	
-	//Onpause pause the music
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		MyMusic MM = new MyMusic();
-		if(setting.getMusic() == true)
-			MM.pauseSong();
-		
-	}
-	//onResume start the music
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if(setting.getMusic())
-			startService(new Intent(this, MyMusic.class));
-	}
-	
 	protected void timeIt(final boolean TimeFlag){
+		
 		timer.schedule(new TimerTask() {
 			public void run() {
 			    timeit++;
@@ -296,10 +318,20 @@ public class GameActivity extends FragmentActivity
 			    			timer.cancel();
 			    			userInputDialog();
 			    		}
+			    		if(timeit > 19){
+			    			if(colorChange){
+			    				timerView.setTextColor(Color.RED);
+			    				colorChange = false;
+			    			}
+			    			else{
+			    				timerView.setTextColor(Color.CYAN);
+			    				colorChange = true;
+			    			}
+			    		}
 			    	}
 			    });
 			        }
-		}, 10, 1000);
+		}, 1000, 1000);
 	}
 	
 	public void onDecisionBtnClick(View view){
@@ -310,7 +342,7 @@ public class GameActivity extends FragmentActivity
 		case R.id.yes:
 			 List<String> numbers = NumberGenerator.SplitCardValues(mPager.getCurrentItem());
 			 logic = new AppLogic(numbers);
-			 logic.setSmallest();
+			 sum = logic.getSmallest() + sum;
 			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
 			break;
 		}
