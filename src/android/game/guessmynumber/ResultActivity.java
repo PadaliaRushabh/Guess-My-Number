@@ -24,18 +24,19 @@ public class ResultActivity extends Activity {
 	MaintainDatabase maintainDB;
 	DisplayResult displayResult;
 	String imageName[] = new String[2];
+	Music music;
+	Settings setting;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
 		S = new Settings(getApplicationContext());
+		setting = new Settings(getApplicationContext());
 
 	    image1 = (ImageView) findViewById(R.id.imageView1);
 	    image2 = (ImageView) findViewById(R.id.imageView2);
 		cardMode = S.getCardMode();
-		
-		
 		
 		Bundle extras = getIntent().getExtras();
 	    if (extras != null) {
@@ -58,13 +59,20 @@ public class ResultActivity extends Activity {
 	    		int idwin = getResources().getIdentifier(
 	    	 	    	"tryagain", "drawable", getPackageName());
 	    	 	resultbackground.setBackgroundResource(idwin);
+	    	 	if(setting.getMusic() == true){
+	    	 		music = new Music("fail", getApplicationContext());
+	    	 		music.Start();
+	    	 	}
 	    		
 	    	}
 	    	else{
 	    	 	int idwin = getResources().getIdentifier(
 	    	 	    	"firework", "drawable", getPackageName());
 	    	 	resultbackground.setBackgroundResource(idwin);
-	    		
+	    	 	if(setting.getMusic() == true){
+	    	 		music = new Music("win", getApplicationContext());
+	    	 		music.Start();
+	    	 	}
 	    		//Insert into Database
 	    	    maintainDB = new MaintainDatabase(getApplicationContext(), result[4], result[2].toString()
 	    	    													, result[3].toString());
@@ -102,5 +110,13 @@ public class ResultActivity extends Activity {
 			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		if(setting.getMusic() == true){
+			music.Stop();
+		}
 	}
 }

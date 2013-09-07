@@ -304,26 +304,6 @@ public class GameActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		
 	} 
-	
-	//Onpause pause the music
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		MyMusic MM = new MyMusic();
-		if(setting.getMusic() == true)
-			MM.pauseSong();
-		
-	}
-	//onResume start the music
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if(setting.getMusic())
-			startService(new Intent(this, MyMusic.class));
-	}
-	
 	protected void timeIt(final boolean TimeFlag){
 		
 		timer.schedule(new TimerTask() {
