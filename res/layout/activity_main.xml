@@ -15,7 +15,8 @@
         android:hint="Input Name"
         android:inputType="textPersonName" 
         android:background="@android:color/background_light"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <requestFocus />
     </EditText>

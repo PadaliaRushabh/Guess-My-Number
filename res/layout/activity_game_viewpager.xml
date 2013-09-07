@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gamelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center|top"
-    android:id="@+id/gamelayout">
+    android:orientation="vertical" >
     
-<LinearLayout
+<LinearLayout 
     android:layout_width="match_parent"
-    android:layout_height="374dp"
+    android:layout_height="wrap_content"
     android:gravity="center|top"
     android:orientation="vertical" >
         
@@ -16,20 +16,36 @@
         android:id="@+id/Timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Timer:0" />
+        android:text="Timer:0" 
+        android:textColor="#CC0000"
+        android:textSize="20sp"/>
     
-
-    <android.game.guessmynumber.CustomViewPager
+   <android.game.guessmynumber.CustomViewPager
         android:id="@+id/pager"
-        android:layout_width="wrap_content"
-        android:layout_height="404dp" />
-    </LinearLayout>
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|bottom"
-        android:orientation="horizontal" >
+        android:layout_height="0dp" 
+        android:layout_weight="1"/>
 
+<LinearLayout
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+   android:gravity="center|bottom"
+   android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#CC3300"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center" />
+  <LinearLayout
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+   android:gravity="center|bottom"
+   android:orientation="horizontal" >
+     
         <Button
             android:id="@+id/no"
             android:layout_width="77dp"
@@ -43,8 +59,10 @@
             android:layout_width="77dp"
             android:layout_height="84dp"
             android:background="@drawable/yes"
-            android:onClick="onDecisionBtnClick"/>
-    </LinearLayout>
-   
-
+            android:onClick="onDecisionBtnClick" />
+    
 </LinearLayout>
+</LinearLayout>   
+</LinearLayout>
+</RelativeLayout>
+
