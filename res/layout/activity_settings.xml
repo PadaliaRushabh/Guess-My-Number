@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/settingimg" >
+    
+    <LinearLayout 
     android:id="@+id/RadioGroupCardMode"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textViewNumberRangeLabel"
@@ -129,3 +134,4 @@
    
     </LinearLayout>
 </LinearLayout>
+</ScrollView>
