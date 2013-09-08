@@ -121,6 +121,8 @@ public class GameActivity extends FragmentActivity
         			if(position == NUM_PAGES -1 ){
         				//sum = logic.getSum();
         				textViewHint.setVisibility(View.GONE);
+        				btn_no.setVisibility(View.GONE);
+        				btn_yes.setVisibility(View.GONE);
         				finish();
         				prepareAndStartResultActivity(2);
         			}
