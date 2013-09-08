@@ -92,6 +92,7 @@ public class ResultActivity extends Activity {
 		switch(item.getItemId()){
 		case android.R.id.home:
 			//Intent upIntent = new Intent(this, MainActivity.class);
+			finish();
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}

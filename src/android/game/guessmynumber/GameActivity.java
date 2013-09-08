@@ -48,8 +48,10 @@ public class GameActivity extends FragmentActivity
 	String name;
 	boolean TimeFlag = false;
 	boolean colorChange = false;
+	boolean clockMusic = true;
 	int sec = 30;
 	AppLogic logic ;
+	Music clock ;
 	 
 
 	/**get the pager from activity_game_developer and set it with adapter**/
@@ -77,6 +79,7 @@ public class GameActivity extends FragmentActivity
 		
 		switch(Integer.parseInt(CardMode)){
 		case 0:
+			clockMusic = false;
 			btn_no.setVisibility(View.VISIBLE);
 			btn_yes.setVisibility(View.VISIBLE);
 			timerView.setVisibility(View.GONE);
@@ -85,6 +88,7 @@ public class GameActivity extends FragmentActivity
 			textViewHint.setText("Is your secret number on this card?");
 			break;
 		case 1:
+			clock = new Music("clock", getApplicationContext());
 			TimeFlag = true;
 		case 2:
 			NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1;
@@ -164,6 +168,10 @@ public class GameActivity extends FragmentActivity
 	}
 	public void userInputDialog(){
 		// get prompts.xml view
+		if(setting.getCardMode().equals("1")){
+			clockMusic = false;
+			clock.Stop();
+		}
 		LayoutInflater li = LayoutInflater.from(context);
 		View promptsView = li.inflate(R.layout.dialog_enter_number, null);
 		
@@ -264,6 +272,83 @@ public class GameActivity extends FragmentActivity
 		
 		return true;
 	}
+
+	/**On quit game dialog click**/
+	@Override
+	public void onDialogPositiveClick(DialogFragment quitDialog) {
+		// TODO Auto-generated method stub
+		//If yes start new activity
+		if(setting.getCardMode().equals("1")){
+			clockMusic = false;
+			clock.Stop();
+		}
+		finish();
+		
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment quitDialog) {
+		// TODO Auto-generated method stub
+		
+	} 
+	protected void timeIt(final boolean TimeFlag){
+		
+		timer.schedule(new TimerTask() {
+			public void run() {
+			    timeit++;
+			    runOnUiThread(new Runnable() {
+
+			    	@Override
+			    	public void run() {
+			    		timerView.setText("Timer:" + timeit);
+			    		if(TimeFlag && timeit == 30 && !((GameActivity.this).isFinishing())){
+			    			timer.cancel();
+			    			userInputDialog();
+			    		}
+			    		if(timeit > 19 && setting.getCardMode().equals("1") &&  !((GameActivity.this).isFinishing())){
+			    			if(clockMusic){
+			    				clockMusic = false;
+			    				clock.Start();
+			    			}
+			    			if(colorChange){
+			    				timerView.setTextColor(Color.RED);
+			    				colorChange = false;
+			    			}
+			    			else{
+			    				timerView.setTextColor(Color.CYAN);
+			    				colorChange = true;
+			    			}
+			    		}
+			    	}
+			    });
+			        }
+		}, 1000, 1000);
+	}
+	
+	public void onDecisionBtnClick(View view){
+		switch(view.getId()){
+		case R.id.no:
+			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+			break;
+		case R.id.yes:
+			 List<String> numbers = NumberGenerator.SplitCardValues(mPager.getCurrentItem());
+			 logic = new AppLogic(numbers);
+			 sum = logic.getSmallest() + sum;
+			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+			break;
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		if(setting.getCardMode().equals("1") && setting.getMusic() && clockMusic){
+			clockMusic = false;
+			clock.Stop();
+		}
+	}
+	
 	/**adapter**/
 	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
 
@@ -295,62 +380,7 @@ public class GameActivity extends FragmentActivity
 			return NUM_PAGES;
 		}
 	}
-
-	/**On quit game dialog click**/
-	@Override
-	public void onDialogPositiveClick(DialogFragment quitDialog) {
-		// TODO Auto-generated method stub
-		//If yes start new activity
-		finish();
-	}
-
-	@Override
-	public void onDialogNegativeClick(DialogFragment quitDialog) {
-		// TODO Auto-generated method stub
-		
-	} 
-	protected void timeIt(final boolean TimeFlag){
-		
-		timer.schedule(new TimerTask() {
-			public void run() {
-			    timeit++;
-			    runOnUiThread(new Runnable() {
-
-			    	@Override
-			    	public void run() {
-			    		timerView.setText("Timer:" + timeit);
-			    		if(TimeFlag && timeit == 30 && !((GameActivity.this).isFinishing())){
-			    			timer.cancel();
-			    			userInputDialog();
-			    		}
-			    		if(timeit > 19 && setting.getCardMode().equals("1")){
-			    			if(colorChange){
-			    				timerView.setTextColor(Color.RED);
-			    				colorChange = false;
-			    			}
-			    			else{
-			    				timerView.setTextColor(Color.CYAN);
-			    				colorChange = true;
-			    			}
-			    		}
-			    	}
-			    });
-			        }
-		}, 1000, 1000);
-	}
 	
-	public void onDecisionBtnClick(View view){
-		switch(view.getId()){
-		case R.id.no:
-			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-			break;
-		case R.id.yes:
-			 List<String> numbers = NumberGenerator.SplitCardValues(mPager.getCurrentItem());
-			 logic = new AppLogic(numbers);
-			 sum = logic.getSmallest() + sum;
-			 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-			break;
-		}
-	}
+	
 }
 

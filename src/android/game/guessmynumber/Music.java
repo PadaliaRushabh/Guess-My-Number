@@ -31,6 +31,8 @@ public class Music {
 	}
 	
 	public void Start(){
-		this.mediaPlayer.start();
+		if(this.mediaPlayer!=null && !this.mediaPlayer.isPlaying()){
+			this.mediaPlayer.start();
+		}
 	}
 }
