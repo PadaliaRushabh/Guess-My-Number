@@ -79,6 +79,7 @@ public class GameActivity extends FragmentActivity
 		case 0:
 			btn_no.setVisibility(View.VISIBLE);
 			btn_yes.setVisibility(View.VISIBLE);
+			timerView.setVisibility(View.GONE);
 			NUM_PAGES = NumberGenerator.NUM_OF_CARDS + 1 ;
 			view.setSwipe(false);
 			textViewHint.setText("Is your secret number on this card?");
