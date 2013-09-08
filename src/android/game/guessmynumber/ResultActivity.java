@@ -11,54 +11,48 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ResultActivity extends Activity {
 
 	String []result = new String[4];
-	ImageView image1 , image2;
-	String msg;
-	Settings S;
+	TextView message;
 	String cardMode;
 	MaintainDatabase maintainDB;
 	DisplayResult displayResult;
 	String imageName[] = new String[2];
 	Music music;
 	Settings setting;
+	Toast toast ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
-		S = new Settings(getApplicationContext());
+		message = (TextView)findViewById(R.id.textViewResultMessage);
 		setting = new Settings(getApplicationContext());
-
-	    image1 = (ImageView) findViewById(R.id.imageView1);
-	    image2 = (ImageView) findViewById(R.id.imageView2);
-		cardMode = S.getCardMode();
-		
+		cardMode = setting.getCardMode();
+		setbackground();
 		Bundle extras = getIntent().getExtras();
 	    if (extras != null) {
 	    	result = extras.getStringArray("result");
 	    }
-	    
+	    message.setText("The Secret Number is " + result[0]);
 		if(cardMode.equals("0")){
 			 Random random = new Random();
 			 int randomNum = random.nextInt(10);
-			 //System.out.println("Num:" + randomNum);
-			 //System.out.println("Result:" + result[0]);
 			 if(randomNum > 7){
 				 result[0] = Integer.toString(Integer.parseInt(result[0]) + randomNum);
 			 }
-			 //System.out.println("Result:" + result[0]);
 		}
 		else{
-			RelativeLayout resultbackground = (RelativeLayout)findViewById(R.id.resultBackground);
 	    	if(result[1] == null || !result[1].toString().equals(result[0].toString())){
-	    		int idwin = getResources().getIdentifier(
-	    	 	    	"tryagain", "drawable", getPackageName());
-	    	 	resultbackground.setBackgroundResource(idwin);
+	    		
+	    		String msg = "Try Again";
+	    		toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
+	    		toast.show();
 	    	 	if(setting.getMusic() == true){
 	    	 		music = new Music("fail", getApplicationContext());
 	    	 		music.Start();
@@ -66,9 +60,10 @@ public class ResultActivity extends Activity {
 	    		
 	    	}
 	    	else{
-	    	 	int idwin = getResources().getIdentifier(
-	    	 	    	"firework", "drawable", getPackageName());
-	    	 	resultbackground.setBackgroundResource(idwin);
+	    		String msg = "Congratulations";
+	    		toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
+	    		toast.show();
+
 	    	 	if(setting.getMusic() == true){
 	    	 		music = new Music("win", getApplicationContext());
 	    	 		music.Start();
@@ -80,15 +75,6 @@ public class ResultActivity extends Activity {
 	    		
 	    	}
 		}
-		
-	    displayResult = new DisplayResult(result[0].toString());
-	    imageName = displayResult.returnName();
-	    int id1 = getResources().getIdentifier(
-	    		imageName[0], "drawable", getPackageName() );
-	    int id2 = getResources().getIdentifier(
-	    		imageName[1], "drawable", getPackageName() );
-	    image1.setImageResource(id1);
-	    image2.setImageResource(id2);
 	}
 	
 	@Override
@@ -118,5 +104,15 @@ public class ResultActivity extends Activity {
 		if(setting.getMusic() == true){
 			music.Stop();
 		}
+	}
+	
+	public void setbackground(){
+		DisplayResult displayResult = new DisplayResult();
+ 	    String imageName = displayResult.returnbackResultgroundName();
+ 	    int id1 = getResources().getIdentifier(
+ 	    		imageName, "drawable", getPackageName() );
+
+ 	    LinearLayout layout = (LinearLayout)findViewById(R.id.resultBackground);
+ 	    layout.setBackgroundResource(id1);
 	}
 }

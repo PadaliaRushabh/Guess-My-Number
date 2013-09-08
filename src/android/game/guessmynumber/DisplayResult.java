@@ -5,30 +5,8 @@ import java.util.Random;
 
 public class DisplayResult {
 
-	char Number1 , Number2;
-	
-	public DisplayResult(String Number){
-		if(Number.length() == 1){
-			this.Number1 = '0';
-			this.Number2 = Number.charAt(0);
-		}
-		else{
-			this.Number1 = Number.charAt(0);
-			this.Number2 = Number.charAt(1);
-		}
-		
-	}
 	public DisplayResult(){
 		
-	}
-	
-	public String[] returnName(){
-		String numbers[] = new String[2];
-		
-		numbers[0] = switchNumber(Character.getNumericValue(this.Number1)); 
-		numbers[1] = switchNumber(Character.getNumericValue(this.Number2));
-		
-		return numbers;
 	}
 	public String returnbackgroundName(){
 		return switchBackground();
@@ -37,7 +15,6 @@ public class DisplayResult {
 	private String switchBackground(){
 		Random rand = new Random();
 		int number = rand.nextInt(4);
-		System.out.println(number);
 		String num = null;
 		switch(number){
 		case 0:
@@ -55,42 +32,27 @@ public class DisplayResult {
 		}
 		return num;
 	}
-	private String switchNumber(int number){
+	private String switchResultBackground(){
+		Random rand = new Random();
+		int number = rand.nextInt(2);
 		String num = null;
 		switch(number){
 		case 0:
-			num =  "zero";
+			num =  "n1";
 			break;
 		case 1:
-			num = "one";
+			num = "n2";
 			break;
 		case 2:
-			num =  "two";
+			num =  "n3";
 			break;
-		case 3:
-			num = "three";
-			break;
-		case 4:
-			num =  "four";
-			break;
-		case 5:
-			num = "five";
-			break;
-		case 6:
-			num =  "six";
-			break;
-		case 7:
-			num = "seven";
-			break;
-		case 8:
-			num =  "eight";
-			break;
-		case 9:
-			num = "nine";
-			break;
-		
 		}
 		return num;
 	}
+	
+	public String returnbackResultgroundName(){
+		return switchResultBackground();
+	}
+	
 	
 }
