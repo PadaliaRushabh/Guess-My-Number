@@ -24,7 +24,7 @@ public class Music {
 	}
 	
 	public void Stop(){
-		if(this.mediaPlayer!=null || this.mediaPlayer.isPlaying()){
+		if(this.mediaPlayer!=null && this.mediaPlayer.isPlaying()){
 			this.mediaPlayer.stop();
 			this.mediaPlayer.release();
 		}

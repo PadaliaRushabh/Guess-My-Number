@@ -101,7 +101,7 @@ public class ResultActivity extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		if(setting.getMusic() == true){
+		if(setting.getMusic() && !cardMode.equals("0")){
 			music.Stop();
 		}
 	}
