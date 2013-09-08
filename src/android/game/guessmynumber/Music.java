@@ -27,6 +27,7 @@ public class Music {
 		if(this.mediaPlayer!=null && this.mediaPlayer.isPlaying()){
 			this.mediaPlayer.stop();
 			this.mediaPlayer.release();
+			this.mediaPlayer = null;
 		}
 	}
 	

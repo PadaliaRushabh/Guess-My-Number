@@ -10,10 +10,12 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ public class SettingActivity extends Activity{
 	Switch switchMusic;
 	TextView range_txt, TimeRange_txt;
 	SeekBar seekbar, seekbarTime;
+	Spinner spinner;
 	String rangeDisplay = "Range: 10 - ";
 	int range , card_mode ,game_mode,TimeRange ;
 	RadioGroup card , game;
@@ -41,6 +44,8 @@ public class SettingActivity extends Activity{
 		//find switch 
 		switchMusic = (Switch) findViewById(R.id.switchMusic);
 		//init textviews and radio button
+		
+		spinner = (Spinner) findViewById(R.id.spinnerAttempt);
 		init();
 		//set listener on seekbar
 		seekbar.setOnSeekBarChangeListener( new OnSeekBarChangeListener() {
@@ -162,7 +167,7 @@ public class SettingActivity extends Activity{
 						, game_mode
 						, switchMusic.isChecked()
 						,actual_range_time
-						,1
+						,Integer.parseInt(spinner.getSelectedItem().toString())
 					);
 		//MusicHelper.isPlaying = switchMusic.isChecked();
 		//Show Toast that setting are saved
@@ -187,12 +192,22 @@ public class SettingActivity extends Activity{
 		
 		//set seekbar seek value
 		seekbar.setProgress(Integer.parseInt(Hash_pref.get("range")));
-		
 		seekbarTime.setProgress(Integer.parseInt(Hash_pref.get("time")));
 		
 		//get radio group 
 		card = (RadioGroup) findViewById(R.id.radioGroupCardMode);
 		game = (RadioGroup) findViewById(R.id.radioGroupGameMode);
+		
+		//set spinner
+		// Create an ArrayAdapter using the string array and a default spinner layout
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		        R.array.attempt_array, android.R.layout.simple_spinner_item);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spinner.setAdapter(adapter);
+		
+		spinner.setSelection(Integer.parseInt(Hash_pref.get("attempt")) - 1);
 		
 		//set both radio group
 		switch(Integer.parseInt(Hash_pref.get("cardMode"))){

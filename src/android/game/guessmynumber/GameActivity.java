@@ -40,7 +40,7 @@ public class GameActivity extends FragmentActivity
 	TextView timerView, textViewHint;	
 	EditText secretNumber;
 	Button btn_no , btn_yes;
-	int timeit = 0 , sum = 0,Maxtime;
+	int timeit = 0 , sum = 0,Maxtime, attempt;
 	NumberGenerator generator;
 	String item;
 	String []result = new String[5];
@@ -48,7 +48,8 @@ public class GameActivity extends FragmentActivity
 	String name;
 	boolean TimeFlag = false;
 	boolean colorChange = false;
-	boolean clockMusic = true;
+	boolean clockMusic ;
+	boolean dialogShownOnce = false;
 	int sec = 30;
 	AppLogic logic ;
 	Music clock ;
@@ -67,7 +68,8 @@ public class GameActivity extends FragmentActivity
 						,(Integer.parseInt(setting.getRange()) + 10));
 		
 		Maxtime = Integer.parseInt(setting.getTime()) + 10;
-		
+		attempt = Integer.parseInt(setting.getAttempt());
+		clockMusic = setting.getMusic();
 		Bundle extras = getIntent().getExtras();
 	    if (extras != null) {
 	    	name = extras.getString("name");
@@ -141,7 +143,7 @@ public class GameActivity extends FragmentActivity
         		case 2:
         			if(position == NUM_PAGES - 1){
         				textViewHint.setVisibility(View.GONE);
-                		userInputDialog();
+        				userInputDialog();        				
                 	}
         			else{
         				List<String> numbers2 ; 
@@ -170,13 +172,14 @@ public class GameActivity extends FragmentActivity
 	}
 	public void userInputDialog(){
 		// get prompts.xml view
-		if(setting.getCardMode().equals("1")){
+		if(setting.getCardMode().equals("1") && setting.getMusic() && !clockMusic){
 			clockMusic = false;
 			clock.Stop();
 		}
 		LayoutInflater li = LayoutInflater.from(context);
 		View promptsView = li.inflate(R.layout.dialog_enter_number, null);
-		
+	 	attempt = attempt - 1;
+	 	dialogShownOnce = true;
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				context);
 
@@ -192,8 +195,16 @@ public class GameActivity extends FragmentActivity
 			    public void onClick(DialogInterface dialog,int id) {
 				// get user input and set it to result
 				// edit text
-			    	finish();
-			    	prepareAndStartResultActivity(0);	
+			    	if(attempt != 0 && !secretNumber.getText().toString().equals(item)){
+			    		System.out.println(attempt);
+			    		userInputDialog();
+			    		/*finish();
+			    		prepareAndStartResultActivity(0);*/
+			    	}
+			    	else{
+			    		finish();
+			    		prepareAndStartResultActivity(0);
+			    	}
 			    }
 			  })
 			.setNegativeButton("I don't Know",
@@ -216,7 +227,7 @@ public class GameActivity extends FragmentActivity
 		switch(status){
 		case 0:
 			result[0] = item;
-			result[1] = secretNumber.getText().toString();;
+			result[1] = secretNumber.getText().toString();
 			result[2] = Integer.toString(timeit);
 			result[3] =  now.toString();
 			result[4] = name;
@@ -280,7 +291,7 @@ public class GameActivity extends FragmentActivity
 	public void onDialogPositiveClick(DialogFragment quitDialog) {
 		// TODO Auto-generated method stub
 		//If yes start new activity
-		if(setting.getCardMode().equals("1")){
+		if(setting.getCardMode().equals("1") && setting.getMusic() && !clockMusic){
 			clockMusic = false;
 			clock.Stop();
 		}
@@ -305,7 +316,9 @@ public class GameActivity extends FragmentActivity
 			    		timerView.setText("Timer:" + timeit);
 			    		if(TimeFlag && timeit == Maxtime && !((GameActivity.this).isFinishing())){
 			    			timer.cancel();
-			    			userInputDialog();
+			    			if(!dialogShownOnce){
+			    				userInputDialog();
+			    			}
 			    		}
 			    		if(timeit > Maxtime - 11 && setting.getCardMode().equals("1") &&  !((GameActivity.this).isFinishing())){
 			    			if(clockMusic){
@@ -345,7 +358,7 @@ public class GameActivity extends FragmentActivity
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		if(setting.getCardMode().equals("1") && setting.getMusic() && clockMusic){
+		if(setting.getCardMode().equals("1") && setting.getMusic() && !clockMusic){
 			clockMusic = false;
 			clock.Stop();
 		}

@@ -14,4 +14,10 @@
     <string name="title_activity_score">HighScore</string>
     <string name="hello_world">Hello world!</string>
 
+    <string-array name="attempt_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
 </resources>
