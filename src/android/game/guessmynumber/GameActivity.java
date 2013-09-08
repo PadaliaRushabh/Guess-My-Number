@@ -322,7 +322,7 @@ public class GameActivity extends FragmentActivity
 			    			timer.cancel();
 			    			userInputDialog();
 			    		}
-			    		if(timeit > 19){
+			    		if(timeit > 19 && setting.getCardMode().equals("1")){
 			    			if(colorChange){
 			    				timerView.setTextColor(Color.RED);
 			    				colorChange = false;
