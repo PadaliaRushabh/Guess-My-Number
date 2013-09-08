@@ -24,6 +24,8 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp" 
+        android:layout_margin="15dp"
+        android:gravity="center|top"
         android:layout_weight="1"/>
 
 <LinearLayout
@@ -37,8 +39,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#CC3300"
+        android:layout_margin="15dp"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:text=""
+        android:gravity="center"
         android:textAlignment="center" />
   <LinearLayout
    android:layout_width="match_parent"
@@ -53,6 +58,7 @@
             android:layout_weight="1"
             android:onClick="onDecisionBtnClick"
             android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:text="No"
             android:textColor="#CC0000"/>
 
@@ -62,6 +68,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:onClick="onDecisionBtnClick"
+            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:text="Yes"
             android:textColor="#3399CC" />

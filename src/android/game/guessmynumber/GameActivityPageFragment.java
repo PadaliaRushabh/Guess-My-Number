@@ -66,18 +66,8 @@ public class GameActivityPageFragment extends Fragment {
 		 rootView = (ViewGroup) inflater
 	                .inflate(R.layout.activity_game, container, false);
 		 if(mPageNumber == NumberGenerator.NUM_OF_CARDS){
-			 
-			if(settings.getCardMode().equals("0")){
-		     	/*((TextView) rootView.findViewById(R.id.textViewHint))
-		     		.setText("Thinking....");*/
-		    }
-			else{
-				((TextView) rootView.findViewById(R.id.pageNumber))
-					.setText("Enter the Number");	 
-			 
-				/*((TextView) rootView.findViewById(R.id.textViewHint))
-					.setText("");*/
-			}
+			((TextView) rootView.findViewById(R.id.pageNumber))
+					.setVisibility(View.GONE);	 	
 		 }
 		 else{	
 			numbers2 = NumberGenerator.SplitCardValues(mPageNumber);
@@ -96,18 +86,6 @@ public class GameActivityPageFragment extends Fragment {
 	     									+ Integer.toString(mPageNumber + 1)  
 	     									+ " of "
 	     									+ total_cards);
-	     	/*if(settings.getCardMode().equals("0")){
-	     		((TextView) rootView.findViewById(R.id.textViewHint))
-				.setText("Is your secret number on this card?");
-	     	}
-	     	else if(numbers2.contains(number.getNumber())){
-	     		((TextView) rootView.findViewById(R.id.textViewHint))
-				.setText("Secret number is on this card");
-	     	}
-	     	else{
-	     		((TextView) rootView.findViewById(R.id.textViewHint))
-				.setText("Secret number is NOT on this card");
-	     	}*/
 	     	
 		 }
 		 return rootView;

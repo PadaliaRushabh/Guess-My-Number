@@ -18,16 +18,20 @@ public class Settings {
     // Range (make variable public to access from outside)
     public static final String KEY_RANGE = "range";
     
+    public static final String KEY_MAX_TIME = "time";
+    
+    public static final String KEY_ATTEMPT = "attempt";
+    
 	Context _Context;
 	SharedPreferencesHelper PrefObj;
 	static  HashMap<String, String> Hash_pref = new HashMap<String, String>();
 	
 	//constructor to be used when to set or update settings
 	public Settings(Context _Context ,int range , int card_mode , int game_mode 
-																	, boolean music_isPlaying){
+									, boolean music_isPlaying, int time , int attempt){
 		
 		PrefObj = new SharedPreferencesHelper(_Context);
-		PrefObj.setPreferences(range ,card_mode, game_mode,music_isPlaying);
+		PrefObj.setPreferences(range ,card_mode, game_mode,music_isPlaying, time , attempt);
 		
 	}
 	
@@ -74,5 +78,17 @@ public class Settings {
 	   getUpdate();
 	   return Settings.Hash_pref.get(KEY_RANGE);
    }
+   
+ public String getTime(){
+	   
+	   getUpdate();
+	   return Settings.Hash_pref.get(KEY_MAX_TIME);
+   }
+ 
+ public String getAttempt(){
+	   
+	   getUpdate();
+	   return Settings.Hash_pref.get(KEY_ATTEMPT);
+ }
     
 }

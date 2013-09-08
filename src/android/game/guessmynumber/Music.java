@@ -24,13 +24,16 @@ public class Music {
 	}
 	
 	public void Stop(){
-		if(this.mediaPlayer!=null || this.mediaPlayer.isPlaying()){
+		if(this.mediaPlayer!=null && this.mediaPlayer.isPlaying()){
 			this.mediaPlayer.stop();
 			this.mediaPlayer.release();
+			this.mediaPlayer = null;
 		}
 	}
 	
 	public void Start(){
-		this.mediaPlayer.start();
+		if(this.mediaPlayer!=null && !this.mediaPlayer.isPlaying()){
+			this.mediaPlayer.start();
+		}
 	}
 }

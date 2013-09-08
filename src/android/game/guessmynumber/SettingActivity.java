@@ -10,10 +10,12 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -23,10 +25,11 @@ import android.widget.Toast;
 public class SettingActivity extends Activity{
 	
 	Switch switchMusic;
-	TextView range_txt;
-	SeekBar seekbar;
-	String rangeDisplay = "Range: 1 - ";
-	int range , card_mode ,game_mode ;
+	TextView range_txt, TimeRange_txt;
+	SeekBar seekbar, seekbarTime;
+	Spinner spinner;
+	String rangeDisplay = "Range: 10 - ";
+	int range , card_mode ,game_mode,TimeRange ;
 	RadioGroup card , game;
 	Settings setting = new Settings(SettingActivity.this);
 	
@@ -37,26 +40,13 @@ public class SettingActivity extends Activity{
 		setContentView(R.layout.activity_settings);
 		//Find seekbar
 		seekbar = (SeekBar)findViewById(R.id.seekBarNumberRange);
-		
-		//init textviews and radio button
-		init();
+		seekbarTime = (SeekBar)findViewById(R.id.seekBarTime);
 		//find switch 
 		switchMusic = (Switch) findViewById(R.id.switchMusic);
-		//set listener on switch to toggel music on and off
-		/*switchMusic.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				// TODO Auto-generated method stub
-				if(!isChecked){
-					MM.pauseSong();
-				}
-				else{
-					startService(new Intent(SettingActivity.this, MyMusic.class));
-				}
-			}
-		});*/
+		//init textviews and radio button
 		
+		spinner = (Spinner) findViewById(R.id.spinnerAttempt);
+		init();
 		//set listener on seekbar
 		seekbar.setOnSeekBarChangeListener( new OnSeekBarChangeListener() {
 			
@@ -82,6 +72,31 @@ public class SettingActivity extends Activity{
 			}
 		});
 		
+		seekbarTime.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				TimeRange  = progress + 10;
+				TimeRange_txt.setText(rangeDisplay + Integer.toString(progress + 10));
+			}
+		});
+		
+		
+		
 	}
 	
 	
@@ -91,6 +106,7 @@ public class SettingActivity extends Activity{
 		switch(item.getItemId()){
 		case android.R.id.home:
 			//Intent upIntent = new Intent(this, MainActivity.class);
+			SaveSettings();
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
@@ -108,7 +124,7 @@ public class SettingActivity extends Activity{
 	}
 	
 	/**set Result as OK and pass the control to the calling activity(main activity)**/
-	public void onOkClick(View view){
+	public void SaveSettings(){
 		String value = new String(); 
 		
 		Intent data = new Intent();
@@ -142,32 +158,23 @@ public class SettingActivity extends Activity{
 		}
 		
 		//get seek value of seekbar
-		int actual_range = seekbar.getProgress();
+		int actual_range_num = seekbar.getProgress();
+		int actual_range_time = seekbarTime.getProgress();
 		//call constructor of setting activity to save preference in sharedpreferences
 		Settings settings = new Settings(
 						SettingActivity.this 
-						, actual_range, card_mode
+						, actual_range_num, card_mode
 						, game_mode
 						, switchMusic.isChecked()
+						,actual_range_time
+						,Integer.parseInt(spinner.getSelectedItem().toString())
 					);
 		//MusicHelper.isPlaying = switchMusic.isChecked();
 		//Show Toast that setting are saved
 		Toast toast = Toast.makeText(this,"Preferences Saved", Toast.LENGTH_SHORT);
 		toast.show();
-		finish();
 	}
-	
-	protected void setSwitch(){
-		Settings setting = new Settings(SettingActivity.this);
-		Toast toast ;
-		if(setting.getMusic()){
-			switchMusic.setChecked(true);
-		}
-		else{
-			switchMusic.setChecked(false);
-		}
-	}
-	
+		
 	//set the values from shared preferences
 	protected void init(){
 		Settings setting = new Settings(SettingActivity.this);
@@ -179,12 +186,28 @@ public class SettingActivity extends Activity{
 		range = Integer.parseInt(Hash_pref.get("range")) + 10;
 		range_txt.setText(rangeDisplay + Integer.toString(range));
 		
+		TimeRange_txt = (TextView)findViewById(R.id.textViewSeekBarTime);
+		TimeRange = Integer.parseInt(Hash_pref.get("time")) + 10;
+		TimeRange_txt.setText(rangeDisplay + Integer.toString(TimeRange));
+		
 		//set seekbar seek value
 		seekbar.setProgress(Integer.parseInt(Hash_pref.get("range")));
+		seekbarTime.setProgress(Integer.parseInt(Hash_pref.get("time")));
 		
 		//get radio group 
 		card = (RadioGroup) findViewById(R.id.radioGroupCardMode);
 		game = (RadioGroup) findViewById(R.id.radioGroupGameMode);
+		
+		//set spinner
+		// Create an ArrayAdapter using the string array and a default spinner layout
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		        R.array.attempt_array, android.R.layout.simple_spinner_item);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spinner.setAdapter(adapter);
+		
+		spinner.setSelection(Integer.parseInt(Hash_pref.get("attempt")) - 1);
 		
 		//set both radio group
 		switch(Integer.parseInt(Hash_pref.get("cardMode"))){
@@ -207,6 +230,13 @@ public class SettingActivity extends Activity{
 			break;
 		case 2:
 			game.check(R.id.radioPrime);
+		}
+		
+		if(Boolean.parseBoolean(Hash_pref.get("isPlaying"))){
+			switchMusic.setChecked(true);
+		}
+		else{
+			switchMusic.setChecked(false);
 		}
 		
 	}
