@@ -43,9 +43,6 @@ public class DisplayResult {
 		case 1:
 			num = "n2";
 			break;
-		case 2:
-			num =  "n3";
-			break;
 		}
 		return num;
 	}

@@ -23,10 +23,10 @@ import android.widget.Toast;
 public class SettingActivity extends Activity{
 	
 	Switch switchMusic;
-	TextView range_txt;
-	SeekBar seekbar;
-	String rangeDisplay = "Range: 1 - ";
-	int range , card_mode ,game_mode ;
+	TextView range_txt, TimeRange_txt;
+	SeekBar seekbar, seekbarTime;
+	String rangeDisplay = "Range: 10 - ";
+	int range , card_mode ,game_mode,TimeRange ;
 	RadioGroup card , game;
 	Settings setting = new Settings(SettingActivity.this);
 	
@@ -37,6 +37,7 @@ public class SettingActivity extends Activity{
 		setContentView(R.layout.activity_settings);
 		//Find seekbar
 		seekbar = (SeekBar)findViewById(R.id.seekBarNumberRange);
+		seekbarTime = (SeekBar)findViewById(R.id.seekBarTime);
 		//find switch 
 		switchMusic = (Switch) findViewById(R.id.switchMusic);
 		//init textviews and radio button
@@ -65,6 +66,31 @@ public class SettingActivity extends Activity{
 				range_txt.setText(rangeDisplay + Integer.toString(progress + 10));
 			}
 		});
+		
+		seekbarTime.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				TimeRange  = progress + 10;
+				TimeRange_txt.setText(rangeDisplay + Integer.toString(progress + 10));
+			}
+		});
+		
+		
 		
 	}
 	
@@ -127,13 +153,16 @@ public class SettingActivity extends Activity{
 		}
 		
 		//get seek value of seekbar
-		int actual_range = seekbar.getProgress();
+		int actual_range_num = seekbar.getProgress();
+		int actual_range_time = seekbarTime.getProgress();
 		//call constructor of setting activity to save preference in sharedpreferences
 		Settings settings = new Settings(
 						SettingActivity.this 
-						, actual_range, card_mode
+						, actual_range_num, card_mode
 						, game_mode
 						, switchMusic.isChecked()
+						,actual_range_time
+						,1
 					);
 		//MusicHelper.isPlaying = switchMusic.isChecked();
 		//Show Toast that setting are saved
@@ -152,8 +181,14 @@ public class SettingActivity extends Activity{
 		range = Integer.parseInt(Hash_pref.get("range")) + 10;
 		range_txt.setText(rangeDisplay + Integer.toString(range));
 		
+		TimeRange_txt = (TextView)findViewById(R.id.textViewSeekBarTime);
+		TimeRange = Integer.parseInt(Hash_pref.get("time")) + 10;
+		TimeRange_txt.setText(rangeDisplay + Integer.toString(TimeRange));
+		
 		//set seekbar seek value
 		seekbar.setProgress(Integer.parseInt(Hash_pref.get("range")));
+		
+		seekbarTime.setProgress(Integer.parseInt(Hash_pref.get("time")));
 		
 		//get radio group 
 		card = (RadioGroup) findViewById(R.id.radioGroupCardMode);

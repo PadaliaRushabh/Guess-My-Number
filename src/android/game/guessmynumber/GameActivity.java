@@ -40,7 +40,7 @@ public class GameActivity extends FragmentActivity
 	TextView timerView, textViewHint;	
 	EditText secretNumber;
 	Button btn_no , btn_yes;
-	int timeit = 0 , sum = 0;
+	int timeit = 0 , sum = 0,Maxtime;
 	NumberGenerator generator;
 	String item;
 	String []result = new String[5];
@@ -65,6 +65,8 @@ public class GameActivity extends FragmentActivity
 		//generator.PrimeGenerator();
 		generator = new NumberGenerator(setting.getGameMode() 
 						,(Integer.parseInt(setting.getRange()) + 10));
+		
+		Maxtime = Integer.parseInt(setting.getTime()) + 10;
 		
 		Bundle extras = getIntent().getExtras();
 	    if (extras != null) {
@@ -301,11 +303,11 @@ public class GameActivity extends FragmentActivity
 			    	@Override
 			    	public void run() {
 			    		timerView.setText("Timer:" + timeit);
-			    		if(TimeFlag && timeit == 30 && !((GameActivity.this).isFinishing())){
+			    		if(TimeFlag && timeit == Maxtime && !((GameActivity.this).isFinishing())){
 			    			timer.cancel();
 			    			userInputDialog();
 			    		}
-			    		if(timeit > 19 && setting.getCardMode().equals("1") &&  !((GameActivity.this).isFinishing())){
+			    		if(timeit > Maxtime - 11 && setting.getCardMode().equals("1") &&  !((GameActivity.this).isFinishing())){
 			    			if(clockMusic){
 			    				clockMusic = false;
 			    				clock.Start();
