@@ -120,6 +120,8 @@ public class GameActivity extends FragmentActivity
         			
         			if(position == NUM_PAGES -1 ){
         				//sum = logic.getSum();
+        				textViewHint.setVisibility(View.GONE);
+        				finish();
         				prepareAndStartResultActivity(2);
         			}
         			else{
@@ -129,6 +131,7 @@ public class GameActivity extends FragmentActivity
         		case 1:
         		case 2:
         			if(position == NUM_PAGES - 1){
+        				textViewHint.setVisibility(View.GONE);
                 		userInputDialog();
                 	}
         			else{
@@ -176,16 +179,15 @@ public class GameActivity extends FragmentActivity
 			    public void onClick(DialogInterface dialog,int id) {
 				// get user input and set it to result
 				// edit text
-			    	prepareAndStartResultActivity(0);
 			    	finish();
+			    	prepareAndStartResultActivity(0);	
 			    }
-			    
 			  })
 			.setNegativeButton("I don't Know",
 			  new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog,int id) {
-			    	prepareAndStartResultActivity(1);
-					finish();
+			    	finish();
+			    	prepareAndStartResultActivity(1);	
 			    }
 			    
 			  });
