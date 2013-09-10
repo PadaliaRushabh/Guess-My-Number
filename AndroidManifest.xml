@@ -45,7 +45,7 @@
         </activity>
         
         <activity
-            android:name="android.game.guessmynumber.Score"
+            android:name="android.game.guessmynumber.ScoreActivity"
             android:label="@string/app_name"
             android:parentActivityName="android.game.guessmynumber.MainActivity" >
             <meta-data

@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 			break;
 		case R.id.menu_score:
-			Intent score = new Intent(this , Score.class);
+			Intent score = new Intent(this , ScoreActivity.class);
 			startActivity(score);
 			break;
 		}
