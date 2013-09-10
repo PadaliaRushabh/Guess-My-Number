@@ -15,13 +15,16 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	String name;
 	EditText Name;
-	Settings setting = new Settings(MainActivity.this);
+	Settings setting; 
+	SharedPreferencesHelper pref;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
 		Name = (EditText)findViewById(R.id.txt_UserName);
+		pref = new SharedPreferencesHelper(getApplicationContext());
+		setting = new Settings(getApplicationContext());	
 	}
 
 	/**On setting clicked open settingActivity**/
@@ -61,5 +64,29 @@ public class MainActivity extends Activity {
 		intent.putExtra("name", name);
 		startActivity(intent);
 	}
-
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(setting.getBackGroundMusic()){
+			startService(new Intent(MainActivity.this, BackgroundMusic.class));
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		if(setting.getBackGroundMusic()){
+			BackgroundMusic bg = new BackgroundMusic();
+			bg.onPause();
+		}
+	}
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		stopService(new Intent(MainActivity.this, BackgroundMusic.class));
+	}
 }

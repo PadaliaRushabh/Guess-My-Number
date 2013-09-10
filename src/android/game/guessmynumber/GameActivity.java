@@ -50,9 +50,11 @@ public class GameActivity extends FragmentActivity
 	boolean colorChange = false;
 	boolean clockMusic ;
 	boolean dialogShownOnce = false;
+	boolean tickticksound = false;
 	int sec = 30;
 	AppLogic logic ;
 	Music clock ;
+	BackgroundMusic bg;
 	 
 
 	/**get the pager from activity_game_developer and set it with adapter**/
@@ -323,7 +325,11 @@ public class GameActivity extends FragmentActivity
 			    		if(timeit > Maxtime - 11 && setting.getCardMode().equals("1") &&  !((GameActivity.this).isFinishing())){
 			    			if(clockMusic){
 			    				clockMusic = false;
+			    				tickticksound = true;
 			    				clock.Start();
+			    				if(setting.getBackGroundMusic() && tickticksound){
+			    					bg.onPause();
+			    				}
 			    			}
 			    			if(colorChange){
 			    				timerView.setTextColor(Color.RED);
@@ -361,6 +367,19 @@ public class GameActivity extends FragmentActivity
 		if(setting.getCardMode().equals("1") && setting.getMusic() && !clockMusic){
 			clockMusic = false;
 			clock.Stop();
+		}
+		if(setting.getBackGroundMusic() && !tickticksound){
+			bg = new BackgroundMusic();
+			bg.onPause();
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(setting.getBackGroundMusic()){
+			startService(new Intent(GameActivity.this, BackgroundMusic.class));
 		}
 	}
 	

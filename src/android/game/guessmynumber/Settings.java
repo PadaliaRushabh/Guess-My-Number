@@ -8,6 +8,8 @@ public class Settings {
 	
 	 // All Shared Preferences Keys
     public static final String KEY_MUSIC = "isPlaying";
+    
+    public static final String KEY_MUSIC_BACKGROUND = "isPlayingBackgroundMusic";
      
     // Card Mode (make variable public to access from outside)
     public static final String KEY_CARDMODE = "cardMode";
@@ -28,10 +30,12 @@ public class Settings {
 	
 	//constructor to be used when to set or update settings
 	public Settings(Context _Context ,int range , int card_mode , int game_mode 
-									, boolean music_isPlaying, int time , int attempt){
+									, boolean music_isPlaying, boolean background_music_isplaying
+									, int time , int attempt){
 		
 		PrefObj = new SharedPreferencesHelper(_Context);
-		PrefObj.setPreferences(range ,card_mode, game_mode,music_isPlaying, time , attempt);
+		PrefObj.setPreferences(range ,card_mode, game_mode,music_isPlaying
+													,background_music_isplaying, time , attempt);
 		
 	}
 	
@@ -90,5 +94,14 @@ public class Settings {
 	   getUpdate();
 	   return Settings.Hash_pref.get(KEY_ATTEMPT);
  }
+ 
+ public boolean getBackGroundMusic(){
+	   
+	   getUpdate();
+	   if (Settings.Hash_pref.get(KEY_MUSIC_BACKGROUND).equals("true"))
+		   return true;
+	   
+	   return false;
+}
     
 }

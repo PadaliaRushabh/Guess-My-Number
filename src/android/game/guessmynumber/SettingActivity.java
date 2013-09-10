@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +25,7 @@ import android.widget.Toast;
 
 public class SettingActivity extends Activity{
 	
-	Switch switchMusic;
+	Switch switchMusic,SwitchbackgroundMusic;
 	TextView range_txt, TimeRange_txt;
 	SeekBar seekbar, seekbarTime;
 	Spinner spinner;
@@ -43,10 +44,25 @@ public class SettingActivity extends Activity{
 		seekbarTime = (SeekBar)findViewById(R.id.seekBarTime);
 		//find switch 
 		switchMusic = (Switch) findViewById(R.id.switchMusic);
+		SwitchbackgroundMusic = (Switch) findViewById(R.id.switchBackGroundMusic);
+		SwitchbackgroundMusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if(isChecked){
+					startService(new Intent(SettingActivity.this, BackgroundMusic.class));
+				}
+				else{
+					stopService(new Intent(SettingActivity.this, BackgroundMusic.class));
+				}
+			}
+		});
 		//init textviews and radio button
 		
 		spinner = (Spinner) findViewById(R.id.spinnerAttempt);
 		init();
+		
 		//set listener on seekbar
 		seekbar.setOnSeekBarChangeListener( new OnSeekBarChangeListener() {
 			
@@ -93,12 +109,8 @@ public class SettingActivity extends Activity{
 				TimeRange  = progress + 10;
 				TimeRange_txt.setText(rangeDisplay + Integer.toString(progress + 10));
 			}
-		});
-		
-		
-		
+		});	
 	}
-	
 	
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -166,6 +178,7 @@ public class SettingActivity extends Activity{
 						, actual_range_num, card_mode
 						, game_mode
 						, switchMusic.isChecked()
+						, SwitchbackgroundMusic.isChecked()
 						,actual_range_time
 						,Integer.parseInt(spinner.getSelectedItem().toString())
 					);
@@ -238,7 +251,30 @@ public class SettingActivity extends Activity{
 		else{
 			switchMusic.setChecked(false);
 		}
-		
+		if(Boolean.parseBoolean(Hash_pref.get("isPlayingBackgroundMusic"))){
+			SwitchbackgroundMusic.setChecked(true);
+		}
+		else{
+			SwitchbackgroundMusic.setChecked(false);
+		}
+	}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(setting.getBackGroundMusic()){
+			startService(new Intent(SettingActivity.this, BackgroundMusic.class));
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		if(setting.getBackGroundMusic()){
+			BackgroundMusic bg = new BackgroundMusic();
+			bg.onPause();
+		}
 	}
 	
 }

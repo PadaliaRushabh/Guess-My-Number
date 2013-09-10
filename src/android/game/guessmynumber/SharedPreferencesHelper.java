@@ -24,6 +24,8 @@ public class SharedPreferencesHelper {
     
     // All Shared Preferences Keys
     public static final String KEY_MUSIC = "isPlaying";
+    
+    public static final String KEY_MUSIC_BACKGROUND = "isPlayingBackgroundMusic";
      
     // Card Mode (make variable public to access from outside)
     public static final String KEY_CARDMODE = "cardMode";
@@ -50,9 +52,10 @@ public class SharedPreferencesHelper {
     //or id the shared preferences dosen't exists
     public void initPreferences(){
     	
-    	if(!pref.contains(KEY_MUSIC)){
+    	if(!pref.contains(KEY_MUSIC_BACKGROUND)){
     		//add values
     		editor.putBoolean(KEY_MUSIC, true);
+    		editor.putBoolean(KEY_MUSIC_BACKGROUND, true);
     		editor.putInt(KEY_CARDMODE, 0);
     		editor.putInt(KEY_GAMEMODE, 0);
     		editor.putInt(KEY_RANGE, 10);
@@ -61,16 +64,17 @@ public class SharedPreferencesHelper {
     	
     		//save changes
     		editor.commit();
-    		System.out.println("init");
     	}
     	
     }
     
     //save preferences to shared preferences
     public void setPreferences(int range , int card_mode , int game_mode , boolean music 
+    												,boolean background_music_isplaying
     												,int time , int attempt){
     	//add values
 		editor.putBoolean(KEY_MUSIC, music);
+		editor.putBoolean(KEY_MUSIC_BACKGROUND, background_music_isplaying);
 		editor.putInt(KEY_CARDMODE, card_mode);
 		editor.putInt(KEY_GAMEMODE, game_mode);
 		editor.putInt(KEY_RANGE, range);
@@ -84,11 +88,12 @@ public class SharedPreferencesHelper {
     public HashMap<String, String> getAllPreferences(){
     	
     	HashMap<String, String> Hash_pref = new HashMap<String, String>();
-    	if(!pref.contains(KEY_MUSIC)){
+    	if(!pref.contains(KEY_MUSIC_BACKGROUND)){
     		initPreferences();
     	}
     	
     	Hash_pref.put(KEY_MUSIC, Boolean.toString(pref.getBoolean(KEY_MUSIC, false)));
+    	Hash_pref.put(KEY_MUSIC_BACKGROUND, Boolean.toString(pref.getBoolean(KEY_MUSIC_BACKGROUND, false)));
     	Hash_pref.put(KEY_CARDMODE, Integer.toString(pref.getInt(KEY_CARDMODE, 4)));
     	Hash_pref.put(KEY_GAMEMODE, Integer.toString(pref.getInt(KEY_GAMEMODE, 4)));
     	Hash_pref.put(KEY_RANGE,Integer.toString(pref.getInt(KEY_RANGE, 4)));
