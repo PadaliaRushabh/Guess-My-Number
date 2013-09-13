@@ -48,6 +48,7 @@ public class GameActivity extends FragmentActivity
 	String CardMode;
 	String name;
 	boolean TimeFlag = false;
+	boolean isPaused = false;
 	boolean colorChange = false;
 	boolean clockMusic ;
 	boolean dialogShownOnce = false;
@@ -312,10 +313,11 @@ public class GameActivity extends FragmentActivity
 		
 	} 
 	protected void timeIt(final boolean TimeFlag){
-		
 		timer.schedule(new TimerTask() {
 			public void run() {
-			    timeit++;
+				if(!isPaused){
+					timeit++;
+				}
 			    runOnUiThread(new Runnable() {
 
 			    	@Override
@@ -373,6 +375,7 @@ public class GameActivity extends FragmentActivity
 			clockMusic = false;
 			clock.Stop();
 		}
+		isPaused = true;
 		if(setting.getBackGroundMusic() && !tickticksound){
 			BackgroundMusic.onActivityPause();
 		}
@@ -382,6 +385,7 @@ public class GameActivity extends FragmentActivity
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		isPaused = false;
 		if(setting.getBackGroundMusic() && !tickticksound){
 			BackgroundMusic.startMusic();
 		}
