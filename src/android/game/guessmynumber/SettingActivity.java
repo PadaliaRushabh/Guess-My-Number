@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,10 +52,10 @@ public class SettingActivity extends Activity{
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				// TODO Auto-generated method stub
 				if(isChecked){
-					startService(new Intent(SettingActivity.this, BackgroundMusic.class));
+					BackgroundMusic.startMusic();
 				}
 				else{
-					stopService(new Intent(SettingActivity.this, BackgroundMusic.class));
+					BackgroundMusic.onActivityPause();
 				}
 			}
 		});
@@ -263,7 +264,7 @@ public class SettingActivity extends Activity{
 		// TODO Auto-generated method stub
 		super.onResume();
 		if(setting.getBackGroundMusic()){
-			startService(new Intent(SettingActivity.this, BackgroundMusic.class));
+			BackgroundMusic.startMusic();
 		}
 	}
 	
@@ -272,9 +273,26 @@ public class SettingActivity extends Activity{
 		// TODO Auto-generated method stub
 		super.onPause();
 		if(setting.getBackGroundMusic()){
-			BackgroundMusic bg = new BackgroundMusic();
-			bg.onPause();
+			BackgroundMusic.onActivityPause();
 		}
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		if(setting.getBackGroundMusic()){
+			BackgroundMusic.setFalse();
+		}
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(setting.getBackGroundMusic()){
+			if(keyCode == KeyEvent.KEYCODE_BACK){
+				BackgroundMusic.setFalse();
+			}
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 	
 }

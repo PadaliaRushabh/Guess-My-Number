@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,7 +55,6 @@ public class GameActivity extends FragmentActivity
 	int sec = 30;
 	AppLogic logic ;
 	Music clock ;
-	BackgroundMusic bg;
 	 
 
 	/**get the pager from activity_game_developer and set it with adapter**/
@@ -134,6 +134,7 @@ public class GameActivity extends FragmentActivity
         				textViewHint.setVisibility(View.GONE);
         				btn_no.setVisibility(View.GONE);
         				btn_yes.setVisibility(View.GONE);
+        				
         				finish();
         				prepareAndStartResultActivity(2);
         			}
@@ -225,6 +226,7 @@ public class GameActivity extends FragmentActivity
 		alertDialog.show();
 	}
 	public void prepareAndStartResultActivity(int status){
+		
 		Date now = new Date();
 		switch(status){
 		case 0:
@@ -254,7 +256,9 @@ public class GameActivity extends FragmentActivity
 		startResultActivity();
 	}
 	public void startResultActivity(){
-		
+		if(setting.getBackGroundMusic()){
+			BackgroundMusic.onActivityPause();
+		}
 		Intent intent = new Intent(GameActivity.this , ResultActivity.class);
 		intent.putExtra("result", result);
 		startActivity(intent);
@@ -293,6 +297,7 @@ public class GameActivity extends FragmentActivity
 	public void onDialogPositiveClick(DialogFragment quitDialog) {
 		// TODO Auto-generated method stub
 		//If yes start new activity
+		BackgroundMusic.setFalse();
 		if(setting.getCardMode().equals("1") && setting.getMusic() && !clockMusic){
 			clockMusic = false;
 			clock.Stop();
@@ -328,7 +333,7 @@ public class GameActivity extends FragmentActivity
 			    				tickticksound = true;
 			    				clock.Start();
 			    				if(setting.getBackGroundMusic() && tickticksound){
-			    					bg.onPause();
+			    					BackgroundMusic.onActivityPause();
 			    				}
 			    			}
 			    			if(colorChange){
@@ -369,8 +374,7 @@ public class GameActivity extends FragmentActivity
 			clock.Stop();
 		}
 		if(setting.getBackGroundMusic() && !tickticksound){
-			bg = new BackgroundMusic();
-			bg.onPause();
+			BackgroundMusic.onActivityPause();
 		}
 	}
 	
@@ -378,9 +382,17 @@ public class GameActivity extends FragmentActivity
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if(setting.getBackGroundMusic()){
-			startService(new Intent(GameActivity.this, BackgroundMusic.class));
+		if(setting.getBackGroundMusic() && !tickticksound){
+			BackgroundMusic.startMusic();
 		}
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		DialogFragment quitDialog = new QuitGameDialogFragment();
+		quitDialog.show(getFragmentManager() , "quitDialog");
+		//return super.onKeyDown(keyCode, event);
+		return;
 	}
 	
 	/**adapter**/

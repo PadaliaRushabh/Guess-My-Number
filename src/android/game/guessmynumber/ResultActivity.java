@@ -32,6 +32,7 @@ public class ResultActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
 		message = (TextView)findViewById(R.id.textViewResultMessage);
+		
 		setting = new Settings(getApplicationContext());
 		cardMode = setting.getCardMode();
 		setbackground();

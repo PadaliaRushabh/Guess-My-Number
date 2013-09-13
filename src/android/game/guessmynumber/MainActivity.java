@@ -1,9 +1,9 @@
 package android.game.guessmynumber;
 
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +21,17 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
 		Name = (EditText)findViewById(R.id.txt_UserName);
 		pref = new SharedPreferencesHelper(getApplicationContext());
 		setting = new Settings(getApplicationContext());	
+		BackgroundMusic.initMusic(getApplicationContext());
 	}
 
 	/**On setting clicked open settingActivity**/
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		// TODO Auto-generated method stub
+		BackgroundMusic.setFalse();
 		switch(item.getItemId()){
 		case R.id.menu_settings:
 			Intent intent = new Intent(this , SettingActivity.class);
@@ -60,6 +61,7 @@ public class MainActivity extends Activity {
 		else{
 			name = Name.getText().toString();
 		}
+		BackgroundMusic.setFalse();
 		Intent intent = new Intent(MainActivity.this, GameActivity.class);
 		intent.putExtra("name", name);
 		startActivity(intent);
@@ -70,7 +72,7 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		if(setting.getBackGroundMusic()){
-			startService(new Intent(MainActivity.this, BackgroundMusic.class));
+			BackgroundMusic.startMusic();
 		}
 	}
 	
@@ -79,14 +81,25 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		if(setting.getBackGroundMusic()){
-			BackgroundMusic bg = new BackgroundMusic();
-			bg.onPause();
+			BackgroundMusic.onActivityPause();
 		}
 	}
 	@Override
-	protected void onDestroy() {
+	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		super.onDestroy();
-		stopService(new Intent(MainActivity.this, BackgroundMusic.class));
+		super.onBackPressed();
+		if(setting.getBackGroundMusic()){
+			BackgroundMusic.stopMusic();
+		}
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(setting.getBackGroundMusic()){
+			if(keyCode == KeyEvent.KEYCODE_BACK){
+				BackgroundMusic.stopMusic();
+			}
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.NavUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -69,7 +70,7 @@ public class ScoreActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		if(setting.getBackGroundMusic()){
-			startService(new Intent(ScoreActivity.this, BackgroundMusic.class));
+			BackgroundMusic.startMusic();
 		}
 	}
 	
@@ -78,9 +79,26 @@ public class ScoreActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		if(setting.getBackGroundMusic()){
-			BackgroundMusic bg = new BackgroundMusic();
-			bg.onPause();
+			BackgroundMusic.onActivityPause();
 		}
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		if(setting.getBackGroundMusic()){
+			BackgroundMusic.setFalse();
+		}
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(setting.getBackGroundMusic()){
+			if(keyCode == KeyEvent.KEYCODE_BACK){
+				BackgroundMusic.setFalse();
+			}
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }

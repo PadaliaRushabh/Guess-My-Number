@@ -1,67 +1,59 @@
 package android.game.guessmynumber;
 
-
-import android.app.Service;
-import android.content.Intent;
+import android.content.Context;
 import android.media.MediaPlayer;
-import android.os.IBinder;
 
-public class BackgroundMusic extends Service{
+public class BackgroundMusic {
 
-	public static  MediaPlayer mediaPlayer;
-	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		super.onCreate();
-		BackgroundMusic.mediaPlayer = MediaPlayer.create(this, R.raw.number);
-		BackgroundMusic.mediaPlayer.setLooping(true);
+	static MediaPlayer mediaplayer;
+	static boolean pause = true;
 		
-	}
-	
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		// TODO Auto-generated method stub
-		if(!BackgroundMusic.mediaPlayer.isPlaying()){
-			BackgroundMusic.mediaPlayer.start();
-		}
-		return 1;
-	}
-	
-	@Override
-	public boolean onUnbind(Intent intent) {
-		// TODO Auto-generated method stub
-		return super.onUnbind(intent);
-	}
-	
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		if(BackgroundMusic.mediaPlayer.isPlaying()){
-			BackgroundMusic.mediaPlayer.stop();
-			BackgroundMusic.mediaPlayer.release();
-			//BackgroundMusic.mediaPlayer = null;
+	public static void initMusic(Context context){
+		if(mediaplayer == null){
+			mediaplayer = MediaPlayer.create(context, R.raw.number);
+			mediaplayer.setLooping(true);
 		}
 	}
 	
-	public static void onPause(){
-		if(BackgroundMusic.mediaPlayer.isPlaying()){
-			BackgroundMusic.mediaPlayer.pause();
+	public static void startMusic(){
+		if(!mediaplayer.isPlaying()){
+			mediaplayer.start();
 		}
 	}
 	
-	public void onStop(){
-		if(BackgroundMusic.mediaPlayer.isPlaying()){
-			BackgroundMusic.mediaPlayer.stop();
-			BackgroundMusic.mediaPlayer.release();
-			BackgroundMusic.mediaPlayer = null;
+	public static void pauseMusic(){
+		if(mediaplayer != null){
+			if(mediaplayer.isPlaying()){
+				mediaplayer.pause();
+			}
 		}
 	}
 	
+	public static void stopMusic(){
+		if(mediaplayer != null){
+			if(mediaplayer.isPlaying()){
+				mediaplayer.stop();
+				mediaplayer.release();
+				mediaplayer = null;
+			}
+		}
+	}
+	
+	public static void onActivityPause(){
+		if(BackgroundMusic.pause){
+			BackgroundMusic.pauseMusic();
+		}
+		else{
+			BackgroundMusic.pause = true;
+		}
+	}
+	
+	public static void setFalse(){
+		BackgroundMusic.pause = false;
+	}
+	
+	public static void setTrue(){
+		BackgroundMusic.pause = true;
+	}
 }
+
