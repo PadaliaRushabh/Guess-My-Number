@@ -52,11 +52,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.game.guessmynumber.MainActivity" />
         </activity>
-        
-        <service
-            android:name="android.game.guessmynumber.BackgroundMusic"
-            android:enabled="true" />
-
     </application>
 
 </manifest>
